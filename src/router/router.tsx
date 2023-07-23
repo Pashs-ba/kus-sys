@@ -10,10 +10,16 @@ function isAuthenticated(): boolean {
     return !!user
 }
 
+function isTeacher(): boolean {
+    const user: User = JSON.parse(localStorage.getItem("user") as string);
+    return user.role.includes("teacher")
+}
+
 export default function AppRoutes() {
     const App = lazy(() => import("../App.tsx"));
     const HomePage = lazy(() => import("../pages/HomePage.tsx"));
     const Login = lazy(() => import("../pages/system/Login.tsx"));
+    const JournalPage = lazy(() => import("../pages/journal/JournalPage.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>
@@ -24,6 +30,11 @@ export default function AppRoutes() {
                                     test_function={isAuthenticated}/>
                         }>
                         <Route index element={<HomePage/>}/>
+                        <Route element={
+                            <Tester navigate_in_fail={"/"} test_function={isTeacher}/> //TODO test
+                        }>
+                            <Route path={"journal"} element={<JournalPage/>}/>
+                        </Route>
                     </Route>
                     <Route element={
                         <Tester navigate_in_fail={"/"}

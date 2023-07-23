@@ -1,5 +1,5 @@
 export type User = {
-    roles: string[],
+    role: string[],
     school_id: 1,
     name: string,
     surname: string,
