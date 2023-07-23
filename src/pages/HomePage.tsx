@@ -1,7 +1,5 @@
 import MessageBlock from "../components/messages/MessageBlock.tsx";
 import {GetLocalUser} from "../utils/utils.ts";
-import Card from "../components/UI/Card.tsx";
-import {Link} from "react-router-dom";
 import HomePageLinkCard from "../components/homepage/HomePageLinkCard.tsx";
 
 export default function HomePage() {
