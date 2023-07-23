@@ -6,3 +6,9 @@ export type User = {
     login: string,
     id: number
 }
+
+export type Journal = {
+    id: number
+    grade: number
+    subject: string
+}

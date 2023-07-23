@@ -23,9 +23,11 @@ import SmartSelect from "./SmartSelect.tsx";
 
 export function Form({
                          elements,
-                         additionalClasses,
+                         additionalClassesButton,
                          buttonText,
-                         onSubmit
+                         horizontal,
+                         onSubmit,
+                         additionalClasses
                      }: FormType) {
     const [form_values, change_form_values] = useState({})
 
@@ -226,14 +228,14 @@ export function Form({
         }
         if (element.type == ElementType.CHECKBOX || element.type == ElementType.RADIO) {
             return (
-                <div className={"mb-3 form-check"} key={element.name}>
+                <div className={`${horizontal ? "me-3" : "mb-3"} form-check`} key={element.name}>
                     {rendered_element}
                     <label className={"form-check-label"}>{element.label}</label>
                 </div>
             )
         } else {
             return (
-                <div className={"mb-3"} key={element.name}>
+                <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
                     <label className={"form-label"}>{element.label}</label>
                     {rendered_element}
                 </div>
@@ -243,10 +245,10 @@ export function Form({
     })
 
     return (
-        <form>
+        <form className={`${horizontal ? "d-flex" : ""} ${additionalClasses}`}>
             {form_elements}
             <button
-                className={`btn btn-primary ${additionalClasses}`}
+                className={`btn btn-primary ${additionalClassesButton} ${horizontal ? "my-2" : ""}`}
                 onClick={(el) => {
                     el.preventDefault()
                     onSubmit(form_values)

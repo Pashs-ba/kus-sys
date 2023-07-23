@@ -15,7 +15,7 @@ export type BaseInputType = BaseElement & {
     onInput?: (el: any) => void
 }
 
-type SelectNodes = {
+export type SelectNodes = {
     disabled?: boolean
     selected?: boolean
     text: string
@@ -74,8 +74,10 @@ export type FormElementType = {
 
 export type FormType = {
     elements: FormElementType[],
-    additionalClasses?: string,
+    additionalClassesButton?: string,
+    additionalClasses?: string
     buttonText?: string,
     onSubmit: (el: any) => void
+    horizontal?: boolean
 }
 

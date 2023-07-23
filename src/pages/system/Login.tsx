@@ -54,6 +54,7 @@ export default function Login() {
                             }}
                             buttonText={"Войти"}/>
                         {/*TODO Translation?*/}
+                        {/*TODO Loading*/}
                     </Card>
                 </div>
             </div>
