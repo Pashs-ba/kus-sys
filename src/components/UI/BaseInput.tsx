@@ -18,7 +18,7 @@ export default function BaseInput(
         <input
             className={"form-control " + additionalClasses}
             placeholder={placeholder}
-            value={value}
+            defaultValue={value}
             disabled={disabled}
             type={type}
             required={required}

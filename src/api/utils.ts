@@ -1,4 +1,4 @@
-import {Journal, Lesson, User} from "../types/types.ts";
+import {Journal, Lesson, Mark, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 
@@ -29,10 +29,23 @@ export function GetAllJournals({teacher_id}: { teacher_id: number }) {
 export function GetJournalData({id}: { id: number }) {
     return new Promise<{ lessons: Lesson[], grade: User[] }>(async (resolve) => {
         const res = await axios.get(`${API_PATH}/get/if/journal_table[id,(lesson[id,theme_id[name],date_val,(mark[id,student_id,mark_value,lesson_id])),grade_id[id,name,(grade_student[student_id[*]])]]/id=${id}`)
-        const lessons: Lesson[] = res.data["journal_tables"][0]["lesson"] as Lesson[]
-        const grade: User[] = res.data["journal_tables"][0]["grade"]["grade_student"].map((el:any) => {
+        const lessons: Lesson[] = res.data["journal_tables"][0]["lessons"] as Lesson[]
+        const grade: User[] = res.data["journal_tables"][0]["grade"]["grade_students"].map((el: any) => {
             return el["student"] as User
         })
         resolve({lessons, grade})
+    })
+}
+
+export function SendMark({mark}: { mark: Mark }) {
+    return new Promise<Mark>(async (resolve) => {
+        const res = await axios.post(`${API_PATH}/post/mark`, {...mark})
+        resolve({
+            id: res.data,
+            student_id: mark.student_id,
+            lesson_id: mark.lesson_id,
+            mark_value: mark.mark_value,
+        })
+
     })
 }

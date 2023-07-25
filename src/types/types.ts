@@ -17,7 +17,7 @@ export type Theme = {
     name: string
 }
 export type Mark = {
-    id: number
+    id?: number
     mark_value: string
     student_id: number
     lesson_id: number
@@ -25,7 +25,7 @@ export type Mark = {
 
 export type Lesson = {
     theme: Theme,
-    mark: Mark[]
+    marks: Mark[]
     id: number
     date_val: string
 }

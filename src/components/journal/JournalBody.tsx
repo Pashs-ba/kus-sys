@@ -7,7 +7,7 @@ export default function JournalBody({grade, lessons, onMarkChange}: {
     onMarkChange: (student_id: number, lesson_id: number, mark_value: string) => void
 }) {
     function GetMarkValue(lesson: Lesson, student: User) {
-        const found = lesson.mark.find((mark: Mark) => mark.student_id === student.id)
+        const found = lesson.marks.find((mark: Mark) => mark.student_id === student.id)
         return found ? found.mark_value : ""
     }
 
@@ -25,7 +25,7 @@ export default function JournalBody({grade, lessons, onMarkChange}: {
                                     <BaseInput
                                         additionalClasses={"text-center invisible-input border-0"}
                                         onInput={(el) => {
-                                            onMarkChange(student.id, lesson.id, el.nativeEvent.data)
+                                            onMarkChange(student.id, lesson.id, el.currentTarget.value)
                                         }}
                                         value={GetMarkValue(lesson, student)}
                                     />
