@@ -13,6 +13,7 @@ export type BaseInputType = BaseElement & {
     min?: number,
     max?: number
     onInput?: (el: any) => void
+    onKeyPress?: (el: any) => void
 }
 
 export type SelectNodes = {

@@ -39,13 +39,28 @@ export function GetJournalData({id}: { id: number }) {
 
 export function SendMark({mark}: { mark: Mark }) {
     return new Promise<Mark>(async (resolve) => {
-        const res = await axios.post(`${API_PATH}/post/mark`, {...mark})
-        resolve({
-            id: res.data,
-            student_id: mark.student_id,
-            lesson_id: mark.lesson_id,
-            mark_value: mark.mark_value,
-        })
+        if (mark.mark_value === "") {
+            console.log(mark)
+            if (mark.id) {
+                await axios.post(`${API_PATH}/drop/mark`, {id: mark.id})
+            } else {
+                await axios.post(`${API_PATH}/drop/mark`, {student_id: mark.student_id, lesson_id: mark.lesson_id})
+            }
+            resolve({
+                student_id: mark.student_id,
+                lesson_id: mark.lesson_id,
+                mark_value: mark.mark_value,
+            })
+        } else {
+            const res = await axios.post(`${API_PATH}/post/mark`, {...mark})
+            resolve({
+                id: res.data,
+                student_id: mark.student_id,
+                lesson_id: mark.lesson_id,
+                mark_value: mark.mark_value,
+            })
+        }
+
 
     })
 }

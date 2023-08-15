@@ -10,7 +10,8 @@ export default function BaseInput(
         min,
         max,
         required,
-        onInput
+        onInput,
+        onKeyPress
     }:
         BaseInputType
 ) {
@@ -28,6 +29,11 @@ export default function BaseInput(
                 if (onInput) {
                     onInput(el)
                 }}}
+            onKeyDown={el=>{
+                if (onKeyPress) {
+                    onKeyPress(el)
+                }
+            }}
         ></input>
     )
 }
