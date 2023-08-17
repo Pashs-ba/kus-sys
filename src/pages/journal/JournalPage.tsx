@@ -13,6 +13,7 @@ import {addMessage} from "../../components/messages/messageSlice.ts";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {MAX_LESSON_IN_PAGE} from "../../config.ts";
+import Paginator from "../../components/UI/Paginator.tsx";
 // import {Form} from "../../components/UI/Form.tsx";
 // import {ElementType} from "../../components/UI/types.ts";
 
@@ -62,32 +63,6 @@ export default function JournalPage() {
         } else {
             navigate(`/journal/${result[0].id}`)
         }
-    }
-
-    function MakePaginator(max_page: number, current_page: number) { //TODO Move to element
-        const pages = []
-        for (let i = 0; i <= max_page; i++) {
-            if (i === current_page) {
-                pages.push(<li className="page-item active" key={i}>
-                    <a className="page-link"
-                       href={"#"}
-                       onClick={(event) => {
-                           event.preventDefault()
-                       }}>{i + 1}</a>
-                </li>)
-            } else {
-                pages.push(<li className="page-item" key={i}>
-                    <a className="page-link"
-                       href="#"
-                       onClick={(event) => {
-                           event.preventDefault()
-                           setPage(i)
-                       }}
-                    >{i + 1}</a>
-                </li>)
-            }
-        }
-        return pages
     }
 
     function GetLessonByPage() {
@@ -148,13 +123,11 @@ export default function JournalPage() {
                             <JournalHead lessons={GetLessonByPage()}/>
                             <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
                         </table>
-                        <nav aria-label="Page navigation example" className={"d-flex justify-content-center"}>
-                            <ul className="pagination">
-                                {
-                                    MakePaginator(maxPage, page)
-                                }
-                            </ul>
-                        </nav>
+                        <Paginator max_page={maxPage}
+                                   current_page={page}
+                                   onPageChange={(new_page) => {
+                                       setPage(new_page)
+                                   }}/>
                     </>
                 ) : <LoadingComponent/>
             }
