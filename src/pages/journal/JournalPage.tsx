@@ -12,12 +12,15 @@ import MessageBlock from "../../components/messages/MessageBlock.tsx";
 import {addMessage} from "../../components/messages/messageSlice.ts";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
+import {MAX_LESSON_IN_PAGE} from "../../config.ts";
 // import {Form} from "../../components/UI/Form.tsx";
 // import {ElementType} from "../../components/UI/types.ts";
 
 export default function JournalPage() {
     const params = useParams()
     const [lessons, setLessons] = useState([] as Lesson[])
+    const [page, setPage] = useState(0)
+    const [maxPage, setMaxPage] = useState(-1)
     const [grade, setGrade] = useState([] as User[])
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -26,6 +29,7 @@ export default function JournalPage() {
         GetJournalData({id: Number(params.journal_id)}).then(res => {
             setLessons(res.lessons)
             setGrade(res.grade.sort((a, b) => a.surname.localeCompare(b.surname)))
+            setMaxPage(res.lessons.length / MAX_LESSON_IN_PAGE)
         })
     }, [params.journal_id])
 
@@ -58,6 +62,35 @@ export default function JournalPage() {
         } else {
             navigate(`/journal/${result[0].id}`)
         }
+    }
+
+    function MakePaginator(max_page, current_page) { //TODO Move to element
+        const pages = []
+        for (let i = 0; i <= max_page; i++) {
+            if (i === current_page) {
+                pages.push(<li className="page-item active" key={i}>
+                    <a className="page-link"
+                       href={"#"}
+                       onClick={(event) => {
+                           event.preventDefault()
+                       }}>{i + 1}</a>
+                </li>)
+            } else {
+                pages.push(<li className="page-item" key={i}>
+                    <a className="page-link"
+                       href="#"
+                       onClick={(event)=>{
+                           event.preventDefault()
+                           setPage(i)
+                       }}
+                    >{i + 1}</a>
+                </li>)
+            }
+        }
+        return pages
+    }
+    function GetLessonByPage(){
+        return lessons.slice(page*MAX_LESSON_IN_PAGE, page*MAX_LESSON_IN_PAGE + MAX_LESSON_IN_PAGE)
     }
 
 
@@ -109,10 +142,19 @@ export default function JournalPage() {
             {/*} onSubmit={()=>{console.log("some")}} horizontal={true} additionalClasses={"m-3"} buttonText={"Найти"} additionalClassesButton={"my-4"}/>*/}
             {
                 lessons.length > 0 ? (
-                    <table className={"table table-striped table-bordered"}>
-                        <JournalHead lessons={lessons}/>
-                        <JournalBody grade={grade} lessons={lessons} onMarkChange={onMarkChange}/>
-                    </table>
+                    <>
+                        <table className={"table table-striped table-bordered"}>
+                            <JournalHead lessons={GetLessonByPage()}/>
+                            <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
+                        </table>
+                        <nav aria-label="Page navigation example" className={"d-flex justify-content-center"}>
+                            <ul className="pagination">
+                                {
+                                    MakePaginator(maxPage, page)
+                                }
+                            </ul>
+                        </nav>
+                    </>
                 ) : <LoadingComponent/>
             }
         </div>

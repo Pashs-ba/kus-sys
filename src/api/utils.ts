@@ -40,8 +40,7 @@ export function GetJournalData({id}: { id: number }) {
 export function SendMark({mark}: { mark: Mark }) {
     return new Promise<Mark>(async (resolve) => {
         if (mark.mark_value === "") {
-            console.log(mark)
-            if (mark.id) {
+            if (mark.id) { // for marks that removed just after create
                 await axios.post(`${API_PATH}/drop/mark`, {id: mark.id})
             } else {
                 await axios.post(`${API_PATH}/drop/mark`, {student_id: mark.student_id, lesson_id: mark.lesson_id})
