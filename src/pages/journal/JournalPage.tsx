@@ -64,7 +64,7 @@ export default function JournalPage() {
         }
     }
 
-    function MakePaginator(max_page, current_page) { //TODO Move to element
+    function MakePaginator(max_page: number, current_page: number) { //TODO Move to element
         const pages = []
         for (let i = 0; i <= max_page; i++) {
             if (i === current_page) {
@@ -79,7 +79,7 @@ export default function JournalPage() {
                 pages.push(<li className="page-item" key={i}>
                     <a className="page-link"
                        href="#"
-                       onClick={(event)=>{
+                       onClick={(event) => {
                            event.preventDefault()
                            setPage(i)
                        }}
@@ -89,8 +89,9 @@ export default function JournalPage() {
         }
         return pages
     }
-    function GetLessonByPage(){
-        return lessons.slice(page*MAX_LESSON_IN_PAGE, page*MAX_LESSON_IN_PAGE + MAX_LESSON_IN_PAGE)
+
+    function GetLessonByPage() {
+        return lessons.slice(page * MAX_LESSON_IN_PAGE, page * MAX_LESSON_IN_PAGE + MAX_LESSON_IN_PAGE)
     }
 
 
