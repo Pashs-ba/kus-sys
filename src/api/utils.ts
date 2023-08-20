@@ -63,3 +63,22 @@ export function SendMark({mark}: { mark: Mark }) {
 
     })
 }
+export function GetAllUsers() {
+    return new Promise<User[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/user`)
+        resolve(res.data.users as User[])
+    })
+}
+
+export function DeleteUsers(ids: number[]) {
+    return new Promise<User[]>(async () => {
+        await axios.post(`${API_PATH}/drop/user`, {id: ids})
+    })
+}
+
+export function SendUser(user: User) {
+    return new Promise<User>(async (resolve) => {
+        await axios.post(`${API_PATH}/post/user`, user)
+        resolve(user)
+    })
+}

@@ -82,3 +82,10 @@ export type FormType = {
     horizontal?: boolean
 }
 
+export type TableFieldType = {
+    name: string
+    label: string
+    valueProcessing?: (el: any) => any
+    width?: number
+}
+
