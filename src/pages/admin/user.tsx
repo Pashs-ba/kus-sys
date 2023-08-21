@@ -8,9 +8,12 @@ import ModalButton from "../../components/UI/ModalButton.tsx";
 import {Form} from "../../components/UI/Form.tsx";
 import {ElementType} from "../../components/UI/types.ts";
 import {SendUser} from "../../api/utils.ts";
+import {GetLocalUser} from "../../utils/utils.ts";
 
 export default function User() {
     const [users, setUsers] = useState([] as User[]);
+    const [current_user] = useState({} as User)
+    const local_user = GetLocalUser()
     useEffect(() => {
         GetAllUsers().then((res) => {
             setUsers(res)
@@ -38,7 +41,7 @@ export default function User() {
     }
 
     function createUser(el: User) {
-        el.school_id = 1 //todo remove
+        el.school_id = local_user.school_id //todo change?
         SendUser(el).then(() => {
             GetAllUsers().then((res) => {
                 setUsers(res)
@@ -91,6 +94,7 @@ export default function User() {
                             }
                         }
                     ]}
+                    instance={current_user}
                     onSubmit={createUser}
                     buttonText={"Отправить"}
                 />

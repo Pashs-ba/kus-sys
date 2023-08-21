@@ -7,13 +7,15 @@ export default function BaseSelect({
                                        required,
                                        multiple,
                                        size,
-                                       onSelect
+                                       onSelect,
+                                        value
                                    }: BaseSelectType) {
     return (
         <select
             className={`form-select ${additionalClasses}`}
             disabled={disabled}
             required={required}
+            defaultValue={value}
             multiple={multiple}
             size={size}
             onChange={(el) => onSelect ? onSelect(el) : ""}

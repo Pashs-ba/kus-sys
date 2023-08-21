@@ -27,7 +27,8 @@ export function Form({
                          buttonText,
                          horizontal,
                          onSubmit,
-                         additionalClasses
+                         additionalClasses,
+                         instance
                      }: FormType) {
     const [form_values, change_form_values] = useState({})
 
@@ -78,9 +79,10 @@ export function Form({
     }
 
     function create_input(settings: BaseInputType, name: string) {
+
         return (
             <BaseInput placeholder={settings.placeholder}
-                       value={settings.value}
+                       value={instance ? instance[name] : ""}
                        disabled={settings.disabled}
                        type={settings.type}
                        min={settings.min}
@@ -120,6 +122,7 @@ export function Form({
                 onSelect={(el) => {
                     on_select_processing(el, name, settings)
                 }}
+                value={instance ? instance[name] : ""}
             />
         )
     }

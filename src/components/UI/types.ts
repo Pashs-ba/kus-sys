@@ -28,7 +28,8 @@ export type BaseSelectType = BaseElement & {
     options: SelectNodes[],
     multiple?: boolean
     size?: number
-    onSelect?: (el: any) => void
+    onSelect?: (el: any) => void,
+    value?: any
 }
 export type BaseCheckboxType = BaseElement & {
     checked?: boolean,
@@ -79,7 +80,8 @@ export type FormType = {
     additionalClasses?: string
     buttonText?: string,
     onSubmit: (el: any) => void
-    horizontal?: boolean
+    horizontal?: boolean,
+    instance?: any
 }
 
 export type TableFieldType = {
