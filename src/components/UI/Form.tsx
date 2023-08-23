@@ -31,6 +31,15 @@ export function Form({
                          instance
                      }: FormType) {
     const [form_values, change_form_values] = useState({})
+    useEffect(() => {
+        if (instance) {
+            const instance_values = {}
+            elements.map((el) => {
+                instance_values[el.name] = instance[el.name]
+            })
+            change_form_values(instance_values)
+        }
+    }, [])
 
     function get_value_from_select(el: FormElementType) {
         let settings = el.settings as BaseSelectType
@@ -66,13 +75,13 @@ export function Form({
         }
     }
 
-    useEffect(() => {
-        let changes: any = {}
-        elements.map((el) => {
-            changes[el.name] = get_value(el)
-        })
-        change_form_values({...form_values, ...changes})
-    }, [])
+    // useEffect(() => {
+    //     let changes: any = {}
+    //     elements.map((el) => {
+    //         changes[el.name] = get_value(el)
+    //     })
+    //     change_form_values({...form_values, ...changes})
+    // }, [])
 
     function element_value_change(el: any, name: string) {
         change_form_values({...form_values, [name]: el})

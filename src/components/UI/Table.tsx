@@ -1,11 +1,12 @@
 import {TableFieldType} from "./types.ts";
 import {useState} from "react";
 
-export default function Table({elements, table_fields, onDelete, additional_classes}: {
+export default function Table({elements, table_fields, onDelete, additional_classes, onEdit}: {
     elements: any[],
     table_fields: TableFieldType[],
     onDelete: (ids: number[]) => void
-    additional_classes?: string
+    additional_classes?: string,
+    onEdit: (element: any) => void
 }) {
     const header = table_fields.map((field: TableFieldType) => <th key={field.name}
                                                                    style={field.width ? {width: `${field.width}%`} : {}}>{field.label}</th>)
@@ -30,6 +31,11 @@ export default function Table({elements, table_fields, onDelete, additional_clas
                         return <td key={field.name}>{GetFieldValue(element, field)}</td>
                     })
                 }
+                <td>
+                    <button className={"btn btn-primary btn-sm"} onClick={() => {
+                        onEdit(element)
+                    }}><i className={"bi bi-pencil"}></i></button>
+                </td>
                 <td><input type="checkbox" className="form-check-input" onInput={(el) => {
                     if (el.currentTarget.checked) {
                         setToDelete([...to_delete, element.id])
@@ -37,6 +43,7 @@ export default function Table({elements, table_fields, onDelete, additional_clas
                         setToDelete(to_delete.filter((id) => id !== element.id))
                     }
                 }}/></td>
+
             </tr>
         )
 
@@ -46,6 +53,9 @@ export default function Table({elements, table_fields, onDelete, additional_clas
             <thead>
             <tr>
                 {header}
+                <th>
+                    Изменить
+                </th>
                 <th>
                     <button className={"btn btn-danger btn-sm"} onClick={() => {
                         onDelete(to_delete)

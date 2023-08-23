@@ -9,10 +9,12 @@ import {Form} from "../../components/UI/Form.tsx";
 import {ElementType} from "../../components/UI/types.ts";
 import {SendUser} from "../../api/utils.ts";
 import {GetLocalUser} from "../../utils/utils.ts";
+import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
+
 
 export default function User() {
     const [users, setUsers] = useState([] as User[]);
-    const [current_user] = useState({} as User)
+    const [current_user, setCurrentUser] = useState({} as User)
     const local_user = GetLocalUser()
     useEffect(() => {
         GetAllUsers().then((res) => {
@@ -42,11 +44,20 @@ export default function User() {
 
     function createUser(el: User) {
         el.school_id = local_user.school_id //todo change?
+        if (current_user.id) {
+            el.id = current_user.id
+        }
         SendUser(el).then(() => {
             GetAllUsers().then((res) => {
                 setUsers(res)
             })
         })
+    }
+
+    function openModal(user: User) {
+        setCurrentUser(user)
+        let modal = new BootstrapModal(document.getElementById("user_modal"), {})
+        modal.show()
     }
 
     return (
@@ -99,7 +110,11 @@ export default function User() {
                     buttonText={"Отправить"}
                 />
             </Modal>
-            <ModalButton connected_with={"user_modal"} additionalClasses={"m-3"}
+            <ModalButton connected_with={"user_modal"}
+                         additionalClasses={"m-3"}
+                         preOpen={() => {
+                             setCurrentUser({} as User)
+                         }}
                          button_text={"Создание юзера"}/>
             <Table elements={users}
                    additional_classes="mt-3"
@@ -117,6 +132,7 @@ export default function User() {
                            width: 20,
                        },
                    ]}
+                   onEdit={openModal}
                    onDelete={onDelete}
             />
         </>
