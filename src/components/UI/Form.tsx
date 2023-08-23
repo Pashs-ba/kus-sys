@@ -33,47 +33,47 @@ export function Form({
     const [form_values, change_form_values] = useState({})
     useEffect(() => {
         if (instance) {
-            const instance_values = {}
+            const instance_values = {} as any
             elements.map((el) => {
-                instance_values[el.name] = instance[el.name]
+                instance_values[el.name] = instance[el.name] as any
             })
             change_form_values(instance_values)
         }
     }, [])
 
-    function get_value_from_select(el: FormElementType) {
-        let settings = el.settings as BaseSelectType
-        let ans = settings.multiple ? [] as string[] : settings.options[0].value
-        settings.options.map((option) => {
-            if (option.selected) {
-                if (settings.multiple) {
-                    (ans as string[]).push(option.value)
-                } else {
-                    ans = option.value
-                }
-            }
-        })
-        return ans
-    }
+    // function get_value_from_select(el: FormElementType) {
+    //     let settings = el.settings as BaseSelectType
+    //     let ans = settings.multiple ? [] as string[] : settings.options[0].value
+    //     settings.options.map((option) => {
+    //         if (option.selected) {
+    //             if (settings.multiple) {
+    //                 (ans as string[]).push(option.value)
+    //             } else {
+    //                 ans = option.value
+    //             }
+    //         }
+    //     })
+    //     return ans
+    // }
 
-    function get_value(el: FormElementType): any {
-        switch (el.type) {
-            case ElementType.INPUT:
-                return (el.settings as BaseInputType).value ? (el.settings as BaseInputType).value : "";
-            case ElementType.SELECT:
-                return get_value_from_select(el)
-            case ElementType.CHECKBOX:
-                return (el.settings as BaseCheckboxType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
-            case ElementType.TEXTAREA:
-                return (el.settings as BaseTextAreaType).value ? (el.settings as BaseInputType).value : "";
-            case ElementType.RADIO:
-                return (el.settings as BaseRadioType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
-            case ElementType.FILE:
-                return null
-            case ElementType.SMART_SELECT:
-                return get_value_from_select(el)
-        }
-    }
+    // function get_value(el: FormElementType): any {
+    //     switch (el.type) {
+    //         case ElementType.INPUT:
+    //             return (el.settings as BaseInputType).value ? (el.settings as BaseInputType).value : "";
+    //         case ElementType.SELECT:
+    //             return get_value_from_select(el)
+    //         case ElementType.CHECKBOX:
+    //             return (el.settings as BaseCheckboxType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
+    //         case ElementType.TEXTAREA:
+    //             return (el.settings as BaseTextAreaType).value ? (el.settings as BaseInputType).value : "";
+    //         case ElementType.RADIO:
+    //             return (el.settings as BaseRadioType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
+    //         case ElementType.FILE:
+    //             return null
+    //         case ElementType.SMART_SELECT:
+    //             return get_value_from_select(el)
+    //     }
+    // }
 
     // useEffect(() => {
     //     let changes: any = {}
