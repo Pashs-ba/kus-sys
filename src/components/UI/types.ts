@@ -89,5 +89,7 @@ export type TableFieldType = {
     label: string
     valueProcessing?: (el: any) => any
     width?: number
+    sortDown?: boolean
+    show_arrow?: boolean
 }
 

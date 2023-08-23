@@ -1,6 +1,6 @@
 import Table from "../../components/UI/Table.tsx";
 import {useEffect, useState} from "react";
-import {DeleteUsers, GetAllUsers} from "../../api/utils.ts";
+import {DeleteUsers, GetAllUsers, SendUserFile} from "../../api/utils.ts";
 import {User} from "../../types/types.ts";
 import MessageBlock from "../../components/messages/MessageBlock.tsx";
 import Modal from "../../components/UI/Modal.tsx";
@@ -60,6 +60,19 @@ export default function User() {
         modal.show()
     }
 
+    function SortUsers(field_name: string, is_up: boolean) {
+        const new_users = users.sort((a, b) => {
+            if (a[field_name] > b[field_name]) {
+                return is_up ? 1 : -1
+            }
+            if (a[field_name] < b[field_name]) {
+                return is_up ? -1 : 1
+            }
+            return 0
+        })
+        setUsers([...new_users])
+    }
+
     return (
         <>
             <MessageBlock/>
@@ -116,6 +129,15 @@ export default function User() {
                              setCurrentUser({} as User)
                          }}
                          button_text={"Создание юзера"}/>
+            <Modal connected_with={"multiple_users_modal"} title={"Загрузка через файл"}>
+                <Form elements={[
+                    {name: "file", label: "Файл", type: ElementType.FILE, settings: {}}
+                ]}
+                      onSubmit={(el) => {
+                          SendUserFile(el.file)
+                      }}/>
+            </Modal>
+            <ModalButton connected_with={"multiple_users_modal"} button_text={"Загрузить через файл"}/>
             <Table elements={users}
                    additional_classes="mt-3"
                    table_fields={[
@@ -132,8 +154,11 @@ export default function User() {
                            width: 20,
                        },
                    ]}
+                   NeedEdit={true}
+                   NeedDelete={true}
                    onEdit={openModal}
                    onDelete={onDelete}
+                   Sort={SortUsers}
             />
         </>
     )

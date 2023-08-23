@@ -63,6 +63,7 @@ export function SendMark({mark}: { mark: Mark }) {
 
     })
 }
+
 export function GetAllUsers() {
     return new Promise<User[]>(async (resolve) => {
         const res = await axios.get(`${API_PATH}/get/all/user`)
@@ -80,5 +81,21 @@ export function SendUser(user: User) {
     return new Promise<User>(async (resolve) => {
         await axios.post(`${API_PATH}/post/user`, user)
         resolve(user)
+    })
+}
+
+export function SendUserFile(file: File) {
+    return new Promise<User>(async () => {
+        const data = {
+            file: file,
+            filename: file.name,
+            index: "data"
+        }
+
+        await axios.post(`${API_PATH}/upload/user`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     })
 }
