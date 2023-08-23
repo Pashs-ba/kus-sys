@@ -10,12 +10,15 @@ import {ElementType} from "../../components/UI/types.ts";
 import {SendUser} from "../../api/utils.ts";
 import {GetLocalUser} from "../../utils/utils.ts";
 import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
+import Paginator from "../../components/UI/Paginator.tsx";
+import {MAX_ELEMENT_IN_TABLE} from "../../config.ts";
 
 
 export default function User() {
     const [users, setUsers] = useState([] as User[]);
     const [current_user, setCurrentUser] = useState({} as User)
     const local_user = GetLocalUser()
+    const [current_page, setCurrentPage] = useState(0)
     useEffect(() => {
         GetAllUsers().then((res) => {
             setUsers(res)
@@ -71,6 +74,10 @@ export default function User() {
             return 0
         })
         setUsers([...new_users])
+    }
+
+    function GetUserByPage() {
+        return users.slice(current_page * MAX_ELEMENT_IN_TABLE, current_page * MAX_ELEMENT_IN_TABLE + MAX_ELEMENT_IN_TABLE)
     }
 
     return (
@@ -138,7 +145,11 @@ export default function User() {
                       }}/>
             </Modal>
             <ModalButton connected_with={"multiple_users_modal"} button_text={"Загрузить через файл"}/>
-            <Table elements={users}
+            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={current_page}
+                       onPageChange={(page) => {
+                           setCurrentPage(page)
+                       }}/>
+            <Table elements={GetUserByPage()}
                    additional_classes="mt-3"
                    table_fields={[
                        {name: "name", label: "Имя"},
@@ -160,6 +171,10 @@ export default function User() {
                    onDelete={onDelete}
                    Sort={SortUsers}
             />
+            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={current_page}
+                       onPageChange={(page) => {
+                           setCurrentPage(page)
+                       }}/>
         </>
     )
 }
