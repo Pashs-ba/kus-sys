@@ -8,7 +8,6 @@ import {
     BaseSelectType,
     BaseTextAreaType,
     ElementType,
-    FormElementType,
     FormType,
     SmartSelectType
 } from "./types.ts";
@@ -75,20 +74,34 @@ export function Form({
     //     }
     // }
 
-    // useEffect(() => {
-    //     let changes: any = {}
-    //     elements.map((el) => {
-    //         changes[el.name] = get_value(el)
-    //     })
-    //     change_form_values({...form_values, ...changes})
-    // }, [])
+    useEffect(() => {
+        const new_values = {}
+        elements.map((el) => {
+            if (el.type === ElementType.SELECT || el.type === ElementType.SMART_SELECT) {
+                if ((el.settings as BaseSelectType).multiple) {
+                    new_values[el.name] = []
+                } else {
+                    if ((el.settings as BaseSelectType).options.length > 0) {
+                        new_values[el.name] = (el.settings as BaseSelectType).options[0].value
+                    } else {
+                        new_values[el.name] = ""
+                    }
+                }
+            }
+            if (instance && instance[el.name]) {
+                new_values[el.name] = instance[el.name]
+            }
+        })
+
+
+        change_form_values(new_values)
+    }, [elements, instance])
 
     function element_value_change(el: any, name: string) {
         change_form_values({...form_values, [name]: el})
     }
 
     function create_input(settings: BaseInputType, name: string) {
-
         return (
             <BaseInput placeholder={settings.placeholder}
                        value={instance ? instance[name] : ""}
@@ -205,10 +218,12 @@ export function Form({
                          size={settings.size}
                          required={settings.required}
                          onSelect={(el) => {
+                             console.log(el)
                              on_select_processing(el, name, settings)
                          }}
                          multiple={settings.multiple}
                          initialSearch={settings.initialSearch}
+                         value={instance ? instance[name] : ""}
             />
         )
     }
@@ -264,8 +279,10 @@ export function Form({
                 onClick={(el) => {
                     el.preventDefault()
                     onSubmit(form_values)
+
                 }}
                 data-bs-dismiss="modal"
+                //TODO Fix close when unvalidated
             >
                 {buttonText ? buttonText : "Submit"}
             </button>

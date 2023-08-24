@@ -21,7 +21,8 @@ export default function AppRoutes() {
     const Login = lazy(() => import("../pages/system/Login.tsx"));
     const SelectJournalPage = lazy(() => import("../pages/journal/SelectJournalPage.tsx"));
     const JournalPage = lazy(() => import("../pages/journal/JournalPage.tsx"));
-    const User = lazy(() => import("../pages/admin/user.tsx"));
+    const User = lazy(() => import("../pages/admin/User.tsx"));
+    const Plan = lazy(() => import("../pages/admin/Plan.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>
@@ -38,6 +39,7 @@ export default function AppRoutes() {
                             <Route path={"journal"} element={<SelectJournalPage/>}/>
                             <Route path={"journal/:journal_id"} element={<JournalPage/>}/>
                             <Route path={"user"} element={<User/>}/>
+                            <Route path={"plan"} element={<Plan/>}/>
                         </Route>
                     </Route>
                     <Route element={

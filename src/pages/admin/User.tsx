@@ -90,25 +90,25 @@ export default function User() {
                             name: "name",
                             label: "Имя",
                             type: ElementType.INPUT,
-                            settings: {}
+                            settings: { required: true }
                         },
                         {
                             name: "surname",
                             label: "Фамилия",
                             type: ElementType.INPUT,
-                            settings: {}
+                            settings: { required: true }
                         },
                         {
                             name: "login",
                             label: "Логин",
                             type: ElementType.INPUT,
-                            settings: {}
+                            settings: { required: true }
                         },
                         {
                             name: "password",
                             label: "Пароль",
                             type: ElementType.INPUT,
-                            settings: {}
+                            settings: { required: true }
                         },
                         {
                             name: "role",
@@ -121,7 +121,8 @@ export default function User() {
                                     {value: "student", text: "Студент"},
                                     {value: "submitor", text: "Участник соревнований"},
                                 ],
-                                multiple: true
+                                multiple: true,
+                                required: true
                             }
                         }
                     ]}
@@ -142,7 +143,8 @@ export default function User() {
                 ]}
                       onSubmit={(el) => {
                           SendUserFile(el.file)
-                      }}/>
+                      }}
+                      buttonText={"Отправить"}/>
             </Modal>
             <ModalButton connected_with={"multiple_users_modal"} button_text={"Загрузить через файл"}/>
             <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={current_page}

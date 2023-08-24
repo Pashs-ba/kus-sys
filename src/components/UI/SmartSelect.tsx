@@ -10,19 +10,20 @@ export default function SmartSelect({
                                         required,
                                         onSelect,
                                         multiple,
-                                        initialSearch
+                                        initialSearch,
+                                        value
                                     }: SmartSelectType) {
     const [smartOptions, changeSmartOptions] = useState(options)
 
     function filterOptions(text: string) {
-        changeSmartOptions(options.map((el) => {
-            if (!el.text.includes(text)){
-                el.style = {...el.style, display: "none"}
-            }else{
-                el.style = {...el.style, display: "block"}
-            }
-            return el
-        }))
+            changeSmartOptions(options.map((el) => {
+                if (!el.text.includes(text)) {
+                    el.style = {...el.style, display: "none"}
+                } else {
+                    el.style = {...el.style, display: "block"}
+                }
+                return el
+            }))
     }
 
     useEffect(() => {
@@ -30,7 +31,9 @@ export default function SmartSelect({
             filterOptions(initialSearch)
         }
     }, [])
-
+    useEffect(()=>{
+        filterOptions("")
+    }, [options])
 
     return (
         <div>
@@ -48,6 +51,7 @@ export default function SmartSelect({
                         required={required}
                         onSelect={onSelect}
                         multiple={multiple}
+                        value={value}
             />
         </div>
     )

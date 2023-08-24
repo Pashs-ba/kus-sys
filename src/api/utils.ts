@@ -1,4 +1,4 @@
-import {Journal, Lesson, Mark, User} from "../types/types.ts";
+import {Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 
@@ -97,5 +97,25 @@ export function SendUserFile(file: File) {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    })
+}
+
+export function GetAllPlans() {
+    return new Promise<Plan[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/plan`)
+        resolve(res.data.plans as Plan[])
+    })
+}
+
+export function DeletePlans(ids: number[]) {
+    return new Promise<Plan[]>(async () => {
+        await axios.post(`${API_PATH}/drop/plan`, {id: ids})
+    })
+}
+
+export function GetAllSubjects() {
+    return new Promise<Subject[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/subject`)
+        resolve(res.data.subjects as Subject[])
     })
 }

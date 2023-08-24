@@ -29,3 +29,13 @@ export type Lesson = {
     id: number
     date_val: string
 }
+export type Plan = {
+    id?: number
+    subject_id: number
+    name: string
+    url: string
+}
+export type Subject = {
+    id: number
+    name: string
+}
