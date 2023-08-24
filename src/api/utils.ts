@@ -121,7 +121,7 @@ export function GetAllSubjects() {
 }
 
 export function CreatePlan(raw_plan: {name: string, file: File, subject_id: number|string, id?: number}) {
-    return new Promise<>(async () => {
+    return new Promise<void>(async () => {
         let plan = {
             name: raw_plan.name,
             subject_id: Number(raw_plan.subject_id),
