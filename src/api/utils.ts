@@ -119,3 +119,24 @@ export function GetAllSubjects() {
         resolve(res.data.subjects as Subject[])
     })
 }
+
+export function CreatePlan(raw_plan: {name: string, file: File, subject_id: number|string, id?: number}) {
+    return new Promise<>(async () => {
+        let plan = {
+            name: raw_plan.name,
+            subject_id: Number(raw_plan.subject_id),
+            file: raw_plan.file,
+            filename: raw_plan.file.name,
+            index: "data",
+        }
+        if (raw_plan.id) {
+            plan["id"] = raw_plan.id
+        }
+        console.log(plan)
+        // await axios.post(`${API_PATH}/post/plan`, plan, {
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data'
+        //     }
+        // })
+    })
+}

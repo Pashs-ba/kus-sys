@@ -206,6 +206,7 @@ export function Form({
                         element_value_change(el.target.files[0], name)
                     }
                 }}
+                url={instance ? instance["url"] : ""}
             />
         )
     }
@@ -218,7 +219,6 @@ export function Form({
                          size={settings.size}
                          required={settings.required}
                          onSelect={(el) => {
-                             console.log(el)
                              on_select_processing(el, name, settings)
                          }}
                          multiple={settings.multiple}
@@ -279,7 +279,6 @@ export function Form({
                 onClick={(el) => {
                     el.preventDefault()
                     onSubmit(form_values)
-
                 }}
                 data-bs-dismiss="modal"
                 //TODO Fix close when unvalidated

@@ -51,6 +51,7 @@ export type BaseRadioType = BaseElement & {
 export type BaseFileType = BaseElement & {
     multiple?: boolean
     onInput?: (el: any) => void
+    url?: string
 }
 
 export type SmartSelectType = BaseSelectType & {
