@@ -91,6 +91,7 @@ export default function Grade() {
     }
 
     // TODO add groups
+    // TODO add pages
     return (
         <>
             <Modal title={"Класс"}
