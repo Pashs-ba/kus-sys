@@ -39,3 +39,10 @@ export type Subject = {
     id: number
     name: string
 }
+export type Grade = {
+    id: number
+    name: string
+    head_id: number
+    is_group: boolean
+    student?: number[]
+}

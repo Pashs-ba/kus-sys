@@ -1,4 +1,4 @@
-import {Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
+import {Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 
@@ -140,5 +140,38 @@ export function CreatePlan(raw_plan: { name: string, file?: File, subject_id: nu
         }
         await axios.post(`${API_PATH}/post/plan`, plan, config)
         resolve()
+    })
+}
+
+export function GetAllGrades() {
+    return new Promise<Grade[]>(async (resolve) => {
+        const pre_res = await axios.get(`${API_PATH}/get/all/grade[*,(grade_student)]`)
+        let res = pre_res.data.grades.map((el: any) => {
+            el.student = el.grade_students.map((el: any) => {
+                return el.student_id
+            })
+            delete el.grade_students
+            return el
+        })
+        resolve(res as Grade[])
+    })
+}
+
+export function SendGrade(grade: {id?: number, name: string, head_id: number|string, student?: (number|string)[]}) {
+    return new Promise<void>(async (resolve) => {
+        if (grade.student){
+            grade["many_to_many"] = "replace"
+            grade["student"] = grade.student.map((el)=>{return Number(el)})
+        }
+        grade["is_group"] = false
+        grade["head_id"] = Number(grade.head_id)
+        console.log(grade)
+        await axios.post(`${API_PATH}/post/grade`, grade)
+        resolve()
+    })
+}
+export function DeleteGrades(ids: number[]) {
+    return new Promise<void>(async () => {
+        await axios.post(`${API_PATH}/drop/grade`, {id: ids})
     })
 }

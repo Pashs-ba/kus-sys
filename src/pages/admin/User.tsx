@@ -119,7 +119,7 @@ export default function User() {
                                     {value: "admin", text: "Администратор"},
                                     {value: "teacher", text: "Преподаватель"},
                                     {value: "student", text: "Студент"},
-                                    {value: "submitor", text: "Участник соревнований"},
+                                    {value: "submitor", text: "Участник соревнований"}, //todo add more roles
                                 ],
                                 multiple: true,
                                 required: true

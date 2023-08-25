@@ -8,7 +8,7 @@ export default function BaseSelect({
                                        multiple,
                                        size,
                                        onSelect,
-                                        value
+                                       value
                                    }: BaseSelectType) {
     function IsSelected(option: SelectNodes) {
         if (value) {
@@ -19,23 +19,29 @@ export default function BaseSelect({
         }
         return false
     }
-    return (
 
-        <select
-            className={`form-select ${additionalClasses}`}
-            disabled={disabled}
-            required={required}
-            multiple={multiple}
-            size={size}
-            onChange={(el) => onSelect ? onSelect(el) : ""}
-        >
-            {options.map((option) => (
-                <option key={option.value}
-                        value={option.value}
-                        disabled={option.disabled}
-                        selected={IsSelected(option)}
-                        style={option.style}>{option.text}</option>
-            ))}
-        </select>
+    return (
+        <>
+            <select
+                className={`form-select ${additionalClasses}`}
+                disabled={disabled}
+                required={required}
+                multiple={multiple}
+                size={size}
+                onChange={(el) => onSelect ? onSelect(el) : ""}
+            >
+                {options.map((option) => (
+                    <option key={option.value}
+                            value={option.value}
+                            disabled={option.disabled}
+                            selected={IsSelected(option)}
+                            style={option.style}>{option.text}</option>
+                ))}
+            </select>
+            {
+                multiple?<div className={"form-text"}>Для выбора нескольких элементов нажмите ctrl + опцию</div>: null
+            }
+
+        </>
     )
 }

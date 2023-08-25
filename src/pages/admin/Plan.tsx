@@ -52,6 +52,26 @@ export default function Plan() {
         modal.show()
     }
 
+    function GetValueFromField(plan: Plan,field_name: string) {
+        if (field_name != "subject_id") {
+            return plan[field_name]
+        }
+        return subjects.find((el) => el.id === plan.subject_id)?.name
+    }
+    function SortPlans(field_name: string, is_up: boolean) {
+        const new_plans = plans.sort((a, b) => {
+
+            if (GetValueFromField(a, field_name) > GetValueFromField(b, field_name)) {
+                return is_up ? 1 : -1
+            }
+            if (GetValueFromField(a, field_name) < GetValueFromField(b, field_name)) {
+                return is_up ? -1 : 1
+            }
+            return 0
+        })
+        setPlans([...new_plans])
+    }
+
 
     return (
         <>
@@ -93,7 +113,9 @@ export default function Plan() {
                    NeedDelete={true}
                    NeedEdit={true}
                    onDelete={onDelete}
-                   onEdit={onEdit}/>
+                   onEdit={onEdit}
+                   Sort={SortPlans}
+            />
         </>
     )
 }
