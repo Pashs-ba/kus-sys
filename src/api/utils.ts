@@ -120,23 +120,25 @@ export function GetAllSubjects() {
     })
 }
 
-export function CreatePlan(raw_plan: {name: string, file: File, subject_id: number|string, id?: number}) {
-    return new Promise<void>(async () => {
+export function CreatePlan(raw_plan: { name: string, file?: File, subject_id: number | string, id?: number }) {
+    return new Promise<void>(async (resolve) => {
         let plan = {
             name: raw_plan.name,
             subject_id: Number(raw_plan.subject_id),
-            file: raw_plan.file,
-            filename: raw_plan.file.name,
-            index: "data",
+        }
+        let config = {}
+        if (raw_plan.file) {
+            plan["file"] = raw_plan.file
+            plan["filename"] = raw_plan.file.name
+            plan["index"] = "data"
+            config["headers"] = {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         if (raw_plan.id) {
             plan["id"] = raw_plan.id
         }
-        console.log(plan)
-        // await axios.post(`${API_PATH}/post/plan`, plan, {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        // })
+        await axios.post(`${API_PATH}/post/plan`, plan, config)
+        resolve()
     })
 }

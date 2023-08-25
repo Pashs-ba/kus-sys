@@ -36,7 +36,14 @@ export default function Plan() {
     }
 
     function onSubmit(el) {
-        CreatePlan(el)
+        if (current_plan.id) {
+            el.id = current_plan.id
+        }
+        CreatePlan(el).then(() => {
+            GetAllPlans().then((res) => {
+                setPlans(res)
+            })
+        })
     }
 
     function onEdit(el: Plan) {
