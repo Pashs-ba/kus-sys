@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
-import {AdminJournal, Grade, Journal, Plan, Subject, User} from "../../types/types.ts";
+import {AdminJournal, Grade, Plan, Subject, User} from "../../types/types.ts";
 import {
+    DeleteAdminJournals,
     GetAllAdminJournals,
-    GetAllGrades,
+    GetAllGrades, GetAllJournals,
     GetAllPlans,
     GetAllSubjects,
     GetAllUsers,
@@ -63,6 +64,18 @@ export default function Journal() {
                 setJournals(res)
             })
         })
+    }
+    function GetDataByField(field: string, journal: AdminJournal){
+
+    }
+    function SortJournals(field: string, is_up: boolean) {
+        setJournals(journals.sort((a, b) => {
+            if (is_up) {
+                return a[field] > b[field] ? 1 : -1
+            } else {
+                return a[field] < b[field] ? 1 : -1
+            }
+        }))
     }
 
     return (
@@ -174,7 +187,13 @@ export default function Journal() {
                     }
                 ]}
                 NeedEdit={true}
-                onDelete={() => {
+                NeedDelete={true}
+                onDelete={(ids: number[]) => {
+                    DeleteAdminJournals(ids).then(() => {
+                        GetAllAdminJournals().then((res) => {
+                            setJournals(res)
+                        })
+                    })
                 }}
                 onEdit={(el: AdminJournal) => {
                     setCurrentJournal(el)

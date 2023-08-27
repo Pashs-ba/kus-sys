@@ -205,3 +205,10 @@ export function SendAdminJournal(journal: AdminJournal) {
         resolve()
     })
 }
+
+export function DeleteAdminJournals(ids: number[]) {
+    return new Promise<void>(async (resolve) => {
+        await axios.post(`${API_PATH}/drop/journal_table`, {id: ids})
+        resolve()
+    })
+}
