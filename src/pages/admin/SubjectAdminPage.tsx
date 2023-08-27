@@ -28,6 +28,30 @@ export default function SubjectAdminPage() {
         })
     }
 
+    function SortSubjects(field: string, is_up: boolean) {
+        if (is_up) {
+            setSubjects([...subjects.sort((a, b) => {
+                if (a[field] > b[field]) {
+                    return 1
+                }
+                if (a[field] < b[field]) {
+                    return -1
+                }
+                return 0
+            })])
+        } else {
+            setSubjects([...subjects.sort((a, b) => {
+                if (a[field] < b[field]) {
+                    return 1
+                }
+                if (a[field] > b[field]) {
+                    return -1
+                }
+                return 0
+            })])
+        }
+    }
+
     return (
         <>
             <Modal title={"Предмет"} connected_with={"subject_modal"}>
@@ -39,7 +63,8 @@ export default function SubjectAdminPage() {
                     instance={current_subject}
                 />
             </Modal>
-            <ModalButton connected_with={"subject_modal"} button_text={"Создать предмет"} additionalClasses={"m-3"}
+            <ModalButton connected_with={"subject_modal"} button_text={"Создать предмет"}
+                         additionalClasses={"m-3"}
                          preOpen={() => {
                              setCurrentSubject({} as Subject)
                          }}/>
@@ -53,6 +78,7 @@ export default function SubjectAdminPage() {
                     let modal = new BootstrapModal(document.getElementById("subject_modal"), {})
                     modal.show()
                 }}
+                Sort={SortSubjects}
                 NeedEdit={true}
                 NeedDelete={true}
                 onDelete={(ids: number[]) => {
