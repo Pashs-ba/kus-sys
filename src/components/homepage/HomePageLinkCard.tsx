@@ -6,7 +6,9 @@ export default function HomePageLinkCard({header, to}: { header: string, to: str
         <div className={"col-3"}>
             <Card additionalClasses={"d-flex flex-column  align-items-center"}>
                 <h3 className={"card-title text-center mb-3"}>{header}</h3>
-                <Link to={to} className={"btn btn-primary text-center"}>Открыть</Link>
+                <div className={"text-center"}>
+                    <Link to={to} className={"btn btn-primary text-center"}>Открыть</Link>
+                </div>
             </Card>
         </div>
     )

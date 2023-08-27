@@ -10,7 +10,10 @@ export default function HomePage() {
             <div className={"row justify-content-center align-items-center full-height"}>
                 {
                     user.role.includes("teacher") ? (
-                        <HomePageLinkCard header={"Журнал"} to={"/journal"}/>
+                        <>
+                            <HomePageLinkCard header={"Журнал"} to={"/journal"}/>
+                            <HomePageLinkCard header={"Администрирование"} to={"/admin"}/>
+                        </>
                     ) : null
                 }
             </div>
