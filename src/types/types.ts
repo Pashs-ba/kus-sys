@@ -46,3 +46,14 @@ export type Grade = {
     is_group: boolean
     student?: number[]
 }
+
+export type AdminJournal = {
+    id: number
+    grade_id: number
+    subject_id: number
+    teacher_id: number
+    plan_id: number
+    head_id: number
+    schedule: string
+    methodist_id: number
+}

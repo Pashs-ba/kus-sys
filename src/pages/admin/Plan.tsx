@@ -14,6 +14,7 @@ export default function Plan() {
     const [current_plan, setCurrentPlan] = useState({} as Plan)
     useEffect(() => {
         GetAllPlans().then((res) => {
+            // console.log(res)
             setPlans(res)
         })
         GetAllSubjects().then((res) => {
@@ -40,7 +41,7 @@ export default function Plan() {
             el.id = current_plan.id
         }
         CreatePlan(el).then(() => {
-            GetAllPlans().then((res) => {
+            GetAllPlans().then((res) => { //todo get by id
                 setPlans(res)
             })
         })
@@ -52,12 +53,13 @@ export default function Plan() {
         modal.show()
     }
 
-    function GetValueFromField(plan: Plan,field_name: string) {
+    function GetValueFromField(plan: Plan, field_name: string) {
         if (field_name != "subject_id") {
             return plan[field_name]
         }
         return subjects.find((el) => el.id === plan.subject_id)?.name
     }
+
     function SortPlans(field_name: string, is_up: boolean) {
         const new_plans = plans.sort((a, b) => {
 

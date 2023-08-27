@@ -1,6 +1,7 @@
-import {Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
+import {AdminJournal, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
+import {GetLocalUser} from "../utils/utils.ts";
 
 export function Auth({login, password}: { login: string, password: string }) {
     return new Promise<User>(async (resolve, reject) => {
@@ -138,6 +139,7 @@ export function CreatePlan(raw_plan: { name: string, file?: File, subject_id: nu
         if (raw_plan.id) {
             plan["id"] = raw_plan.id
         }
+        console.log(plan)
         await axios.post(`${API_PATH}/post/plan`, plan, config)
         resolve()
     })
@@ -157,11 +159,18 @@ export function GetAllGrades() {
     })
 }
 
-export function SendGrade(grade: {id?: number, name: string, head_id: number|string, student?: (number|string)[]}) {
+export function SendGrade(grade: {
+    id?: number,
+    name: string,
+    head_id: number | string,
+    student?: (number | string)[]
+}) {
     return new Promise<void>(async (resolve) => {
-        if (grade.student){
+        if (grade.student) {
             grade["many_to_many"] = "replace"
-            grade["student"] = grade.student.map((el)=>{return Number(el)})
+            grade["student"] = grade.student.map((el) => {
+                return Number(el)
+            })
         }
         grade["is_group"] = false
         grade["head_id"] = Number(grade.head_id)
@@ -170,8 +179,29 @@ export function SendGrade(grade: {id?: number, name: string, head_id: number|str
         resolve()
     })
 }
+
 export function DeleteGrades(ids: number[]) {
     return new Promise<void>(async () => {
         await axios.post(`${API_PATH}/drop/grade`, {id: ids})
+    })
+}
+
+export function GetAllAdminJournals() {
+    return new Promise<AdminJournal[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/journal_table`)
+        resolve(res.data.journal_tables as AdminJournal[])
+    })
+}
+
+export function SendAdminJournal(journal: AdminJournal) {
+    journal.grade_id = Number(journal.grade_id)
+    journal.head_id = Number(journal.head_id)
+    journal.subject_id = Number(journal.subject_id)
+    journal.teacher_id = Number(journal.teacher_id)
+    journal.plan_id = Number(journal.plan_id)
+    journal.methodist_id = Number(journal.methodist_id)
+    return new Promise<void>(async (resolve) => {
+        await axios.post(`${API_PATH}/post/journal_table`, journal)
+        resolve()
     })
 }

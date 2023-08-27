@@ -8,7 +8,7 @@ import {
     BaseSelectType,
     BaseTextAreaType,
     ElementType,
-    FormType,
+    FormType, ScheduleFieldType,
     SmartSelectType
 } from "./types.ts";
 import {ReactElement, useEffect, useState} from "react";
@@ -19,6 +19,7 @@ import {BaseTextArea} from "./BaseTextArea.tsx";
 import BaseRadio from "./BaseRadio.tsx";
 import BaseFile from "./BaseFile.tsx";
 import SmartSelect from "./SmartSelect.tsx";
+import ScheduleInput from "./ScheduleInput.tsx";
 
 export function Form({
                          elements,
@@ -227,6 +228,16 @@ export function Form({
             />
         )
     }
+    function create_schedule_input(settings: ScheduleFieldType, name:string){
+        return(
+            <ScheduleInput value={instance?instance[name]:""}
+                           additionalClasses={settings.additionalClasses}
+                           onInput={(el)=>{
+                               element_value_change(el, name)
+                           }}
+            />
+        )
+    }
 
     const form_elements = elements.map((element) => {
         let rendered_element: ReactElement
@@ -251,6 +262,9 @@ export function Form({
                 break
             case ElementType.SMART_SELECT:
                 rendered_element = create_smart_select(element.settings as SmartSelectType, element.name)
+                break
+            case ElementType.SCHEDULE:
+                rendered_element = create_schedule_input(element.settings as ScheduleFieldType, element.name)
                 break
         }
         if (element.type == ElementType.CHECKBOX || element.type == ElementType.RADIO) {

@@ -14,6 +14,7 @@ export type BaseInputType = BaseElement & {
     max?: number
     onInput?: (el: any) => void
     onKeyPress?: (el: any) => void
+    size?: number
 }
 
 export type SelectNodes = {
@@ -65,7 +66,8 @@ export enum ElementType {
     TEXTAREA,
     RADIO,
     FILE,
-    SMART_SELECT
+    SMART_SELECT,
+    SCHEDULE
 }
 
 export type FormElementType = {
@@ -94,3 +96,7 @@ export type TableFieldType = {
     show_arrow?: boolean
 }
 
+export type ScheduleFieldType = BaseElement & {
+    value?: string,
+    onInput?: (el: any) => void
+}
