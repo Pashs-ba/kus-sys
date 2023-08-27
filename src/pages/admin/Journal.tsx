@@ -51,31 +51,47 @@ export default function Journal() {
             } as SelectNodes
         })
     }
-    function onSubmit(el: any){
-        if (current_journal.id){
+
+    function onSubmit(el: any) {
+        if (current_journal.id) {
             el.id = current_journal.id
         }
-        if (el.grade_id){
+        if (el.grade_id) {
             el.head_id = grades.find((el2) => el2.id === Number(el.grade_id))?.head_id
         }
         el.methodist_id = GetLocalUser().id
-        SendAdminJournal(el).then(()=>{
-            GetAllAdminJournals().then((res)=>{
+        SendAdminJournal(el).then(() => {
+            GetAllAdminJournals().then((res) => {
                 setJournals(res)
             })
         })
     }
-    function GetDataByField(field: string, journal: AdminJournal){
 
+    function GetDataByField(field: string, journal: AdminJournal) {
+        switch (field) {
+            case "grade_id":
+                return grades.find((el) => el.id === journal.grade_id)?.name
+            case "subject_id":
+                return subjects.find((el) => el.id === journal.subject_id)?.name
+            case "plan_id":
+                return plans.find((el) => el.id === journal.plan_id)?.name
+            case "teacher_id":
+                return users.find((el) => el.id === journal.teacher_id)?.name
+            case "methodist_id":
+                return users.find((el) => el.id === journal.methodist_id)?.name
+            default:
+                return journal[field]
+        }
     }
+
     function SortJournals(field: string, is_up: boolean) {
-        setJournals(journals.sort((a, b) => {
+        setJournals([...journals.sort((a, b) => {
             if (is_up) {
-                return a[field] > b[field] ? 1 : -1
+                return GetDataByField(field, a) > GetDataByField(field, b) ? 1 : -1
             } else {
-                return a[field] < b[field] ? 1 : -1
+                return GetDataByField(field, a) < GetDataByField(field, b) ? 1 : -1
             }
-        }))
+        })])
     }
 
     return (
@@ -188,6 +204,7 @@ export default function Journal() {
                 ]}
                 NeedEdit={true}
                 NeedDelete={true}
+                Sort={SortJournals}
                 onDelete={(ids: number[]) => {
                     DeleteAdminJournals(ids).then(() => {
                         GetAllAdminJournals().then((res) => {
