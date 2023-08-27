@@ -212,3 +212,17 @@ export function DeleteAdminJournals(ids: number[]) {
         resolve()
     })
 }
+
+export function SendSubject(subject: Subject) {
+    return new Promise<void>(async (resolve) => {
+        await axios.post(`${API_PATH}/post/subject`, subject)
+        resolve()
+    })
+}
+
+export function DeleteSubjects(ids: number[]) {
+    return new Promise<void>(async (resolve) => {
+        await axios.post(`${API_PATH}/drop/subject`, {id: ids})
+        resolve()
+    })
+}
