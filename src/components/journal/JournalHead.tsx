@@ -4,12 +4,13 @@ export default function JournalHead({lessons}: { lessons: Lesson[] }) {
     return (
         <thead>
         <tr>
-            <th>№</th>
-            <th>Фамилия, имя</th>
+            <th colSpan={2}></th>
             <th colSpan={lessons.length} className={"text-center"}>Даты</th>
         </tr>
         <tr>
-            <th colSpan={2}></th>
+            <th>№</th>
+            <th>Фамилия, имя</th>
+
             {
                 lessons.map(el => {
                     return <th key={el.id}>

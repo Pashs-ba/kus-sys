@@ -228,9 +228,8 @@ export function DeleteSubjects(ids: number[]) {
 }
 
 export function PrintJournal(ids: number[]) {
-    return new Promise<void>(async (resolve) => {
-        console.log("wait with input", ids)
-        // await axios.post(`${API_PATH}/print/journal`, {id: ids})
-        resolve()
+    return new Promise<string>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/print_journal/${ids.join(",")}`)
+        resolve(`https://kusmirror.ru/${res.data}`)
     })
 }

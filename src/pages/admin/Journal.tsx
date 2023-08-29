@@ -206,7 +206,9 @@ export default function Journal() {
                         name: "id",
                         checkbox: {
                             onButtonClick: (el) => {
-                                PrintJournal(el).then()
+                                PrintJournal(el).then((res)=>{
+                                    window.open(res)
+                                })
                             }
                         }
                     }
