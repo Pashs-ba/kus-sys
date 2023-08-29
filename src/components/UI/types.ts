@@ -86,6 +86,10 @@ export type FormType = {
     horizontal?: boolean,
     instance?: any
 }
+export type CheckboxFieldType = {
+    onButtonClick: (el: any) => void
+    btn_type?: string
+}
 
 export type TableFieldType = {
     name: string
@@ -94,7 +98,10 @@ export type TableFieldType = {
     width?: number
     sortDown?: boolean
     show_arrow?: boolean
+    checkbox?: CheckboxFieldType
 }
+
+
 
 export type ScheduleFieldType = BaseElement & {
     value?: string,

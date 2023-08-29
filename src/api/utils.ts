@@ -226,3 +226,11 @@ export function DeleteSubjects(ids: number[]) {
         resolve()
     })
 }
+
+export function PrintJournal(ids: number[]) {
+    return new Promise<void>(async (resolve) => {
+        console.log("wait with input", ids)
+        // await axios.post(`${API_PATH}/print/journal`, {id: ids})
+        resolve()
+    })
+}

@@ -21,26 +21,44 @@ export default function Table({
     Sort?: (field_name: string, is_up: boolean) => void
 }) {
     const [dynamic_table_fields, setTableFields] = useState(table_fields)
+    const [checkboxes_selected, setCheckboxesSelected] = useState({} as any)
     useEffect(() => {
+        let new_checkboxes_selected = {}
         table_fields.forEach((field) => {
             field.sortDown = false
+            if (field.checkbox) {
+                new_checkboxes_selected[field.name] = []
+            }
         })
+        setCheckboxesSelected(new_checkboxes_selected)
         setTableFields(table_fields)
     }, [])
     const header = dynamic_table_fields.map((field: TableFieldType) => {
         return (
             <th key={field.name}
                 style={field.width ? {width: `${field.width}%`} : {}}>
-                <a className={"text-decoration-none text-dark"}
-                   href={"#"}
-                   onClick={(el) => {
-                       el.preventDefault()
-                       field.sortDown = !field.sortDown
-                       Sort && Sort(field.name, field.sortDown)
-                   }}
-                >
-                    {field.label}
-                </a>
+                {
+                    field.checkbox ? (
+                        <button
+                            className={`btn btn-${field.checkbox.btn_type ? field.checkbox.btn_type : "success"} btn-sm`}
+                            onClick={() => {
+                                field.checkbox?.onButtonClick(checkboxes_selected[field.name])
+                            }}>{field.label}
+                        </button>
+                    ) : (
+                        <a className={"text-decoration-none text-dark"}
+                           href={"#"}
+                           onClick={(el) => {
+                               el.preventDefault()
+                               field.sortDown = !field.sortDown
+                               Sort && Sort(field.name, field.sortDown)
+                           }}
+                        >
+                            {field.label}
+                        </a>
+                    )
+                }
+
             </th>
         )
     })
@@ -63,6 +81,26 @@ export default function Table({
             <tr key={element.id}>
                 {
                     table_fields.map((field: TableFieldType) => {
+                        if (field.checkbox) {
+                            return (
+                                <td key={field.name}>
+                                    <input type="checkbox" className="form-check-input"
+                                           onInput={(el) => {
+                                               if (el.currentTarget.checked) {
+                                                   setCheckboxesSelected({
+                                                       ...checkboxes_selected,
+                                                       [field.name]: [...checkboxes_selected[field.name], element.id]
+                                                   })
+                                               } else {
+                                                   setCheckboxesSelected({
+                                                       ...checkboxes_selected,
+                                                       [field.name]: checkboxes_selected[field.name].filter((id) => id !== element.id)
+                                                   })
+                                               }
+                                           }}/>
+                                </td>
+                            )
+                        }
                         return <td key={field.name}>{GetFieldValue(element, field)}</td>
                     })
                 }

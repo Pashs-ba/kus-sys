@@ -6,7 +6,7 @@ import {
     GetAllGrades, GetAllJournals,
     GetAllPlans,
     GetAllSubjects,
-    GetAllUsers,
+    GetAllUsers, PrintJournal,
     SendAdminJournal
 } from "../../api/utils.ts";
 import Table from "../../components/UI/Table.tsx";
@@ -198,6 +198,15 @@ export default function Journal() {
                             let res = users.find((el2) => el2.id === el)
                             if (res) {
                                 return `${res.surname} ${res.name[0]}.`
+                            }
+                        }
+                    },
+                    {
+                        label: "Распечатать журналы",
+                        name: "id",
+                        checkbox: {
+                            onButtonClick: (el) => {
+                                PrintJournal(el).then()
                             }
                         }
                     }
