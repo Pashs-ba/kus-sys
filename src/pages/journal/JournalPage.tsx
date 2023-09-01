@@ -76,14 +76,13 @@ export default function JournalPage() {
     }
 
 
-
     function GetMonthNumberFromName(name: string) {
 
     }
 
     function GetLessonByPage() {
         let page_month = GetMonthsFromLessons()[page]
-        return lessons.filter((value)=>{
+        return lessons.filter((value) => {
             return new Date(value.date_val).getMonth() === page_month
         })
     }
@@ -99,7 +98,7 @@ export default function JournalPage() {
                          button_text={"Выбор журнала"}/>
             {
                 lessons.length > 0 ? (
-                    <>
+                    <div className={"mx-5"}>
                         <Paginator max_page={GetMonthsFromLessons().length - 1}
                                    current_page={page}
                                    onPageChange={(new_page) => {
@@ -112,7 +111,7 @@ export default function JournalPage() {
                             <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
                         </table>
 
-                    </>
+                    </div>
                 ) : <LoadingComponent/>
             }
         </div>
