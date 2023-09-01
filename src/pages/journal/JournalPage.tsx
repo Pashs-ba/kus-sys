@@ -14,6 +14,7 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {MAX_LESSON_IN_PAGE} from "../../config.ts";
 import Paginator from "../../components/UI/Paginator.tsx";
+import {MonthNumberToName} from "../../utils/utils.ts";
 // import {Form} from "../../components/UI/Form.tsx";
 // import {ElementType} from "../../components/UI/types.ts";
 
@@ -65,8 +66,26 @@ export default function JournalPage() {
         }
     }
 
+    function GetMonthsFromLessons() {
+        const months = []
+        for (let i = 0; i < lessons.length; i++) {
+            const date = new Date(lessons[i].date_val)
+            months.push(date.getMonth())
+        }
+        return Array.from(new Set(months))
+    }
+
+
+
+    function GetMonthNumberFromName(name: string) {
+
+    }
+
     function GetLessonByPage() {
-        return lessons.slice(page * MAX_LESSON_IN_PAGE, page * MAX_LESSON_IN_PAGE + MAX_LESSON_IN_PAGE)
+        let page_month = GetMonthsFromLessons()[page]
+        return lessons.filter((value)=>{
+            return new Date(value.date_val).getMonth() === page_month
+        })
     }
 
 
@@ -78,56 +97,21 @@ export default function JournalPage() {
             </Modal>
             <ModalButton connected_with={"select_journal_modal"} additionalClasses={"m-3"}
                          button_text={"Выбор журнала"}/>
-            {/*<Form elements={*/}
-            {/*    [*/}
-            {/*        {*/}
-            {/*            name:"test",*/}
-            {/*            label: "Класс",*/}
-            {/*            type: ElementType.SMART_SELECT,*/}
-            {/*            settings: {*/}
-            {/*                options:[*/}
-            {/*                    {*/}
-            {/*                        value: "1",*/}
-            {/*                        text: "1"*/}
-            {/*                    },*/}
-            {/*                    {*/}
-            {/*                        value: "1",*/}
-            {/*                        text: "1"*/}
-            {/*                    }*/}
-            {/*                ]*/}
-            {/*            }*/}
-            {/*        },*/}
-            {/*        {*/}
-            {/*            name:"test1",*/}
-            {/*            label: "Предмет",*/}
-            {/*            type: ElementType.SMART_SELECT,*/}
-            {/*            settings: {*/}
-            {/*                options:[*/}
-            {/*                    {*/}
-            {/*                        value: "1",*/}
-            {/*                        text: "1"*/}
-            {/*                    },*/}
-            {/*                    {*/}
-            {/*                        value: "1",*/}
-            {/*                        text: "1"*/}
-            {/*                    }*/}
-            {/*                ]*/}
-            {/*            }*/}
-            {/*        }*/}
-            {/*    ]*/}
-            {/*} onSubmit={()=>{console.log("some")}} horizontal={true} additionalClasses={"m-3"} buttonText={"Найти"} additionalClassesButton={"my-4"}/>*/}
             {
                 lessons.length > 0 ? (
                     <>
+                        <Paginator max_page={GetMonthsFromLessons().length - 1}
+                                   current_page={page}
+                                   onPageChange={(new_page) => {
+                                       setPage(new_page)
+                                   }}
+                                   custom_page_names={GetMonthsFromLessons().map((month) => MonthNumberToName(month))}
+                        />
                         <table className={"table table-striped table-bordered"}>
                             <JournalHead lessons={GetLessonByPage()}/>
                             <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
                         </table>
-                        <Paginator max_page={maxPage}
-                                   current_page={page}
-                                   onPageChange={(new_page) => {
-                                       setPage(new_page)
-                                   }}/>
+
                     </>
                 ) : <LoadingComponent/>
             }

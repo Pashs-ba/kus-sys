@@ -14,8 +14,9 @@ export default function JournalHead({lessons}: { lessons: Lesson[] }) {
             {
                 lessons.map(el => {
                     return <th key={el.id}>
-                        <div className={"m-auto"}
-                             style={{"writing-mode": "vertical-rl", "text-orientation": "mixed"}}>{el.date_val}</div>
+                        <div className={"m-auto text-center"}
+                             >{`${new Date(el.date_val).getDate()<10?'0':''}${new Date(el.date_val).getDate()}`}</div>
+                    {/*    style={{"writingMode": "vertical-rl", "textOrientation": "mixed"}}*/}
                     </th>
                 })
             }
