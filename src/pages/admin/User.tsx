@@ -16,9 +16,9 @@ import {MAX_ELEMENT_IN_TABLE} from "../../config.ts";
 
 export default function User() {
     const [users, setUsers] = useState([] as User[]);
-    const [current_user, setCurrentUser] = useState({} as User)
-    const local_user = GetLocalUser()
-    const [current_page, setCurrentPage] = useState(0)
+    const [currentUser, setCurrentUser] = useState({} as User)
+    const user = GetLocalUser()
+    const [currentPage, setCurrentPage] = useState(0)
     useEffect(() => {
         GetAllUsers().then((res) => {
             setUsers(res)
@@ -46,9 +46,9 @@ export default function User() {
     }
 
     function createUser(el: User) {
-        el.school_id = local_user.school_id //todo change?
-        if (current_user.id) {
-            el.id = current_user.id
+        el.school_id = user.school_id //todo change?
+        if (currentUser.id) {
+            el.id = currentUser.id
         }
         SendUser(el).then(() => {
             GetAllUsers().then((res) => {
@@ -77,7 +77,7 @@ export default function User() {
     }
 
     function GetUserByPage() {
-        return users.slice(current_page * MAX_ELEMENT_IN_TABLE, current_page * MAX_ELEMENT_IN_TABLE + MAX_ELEMENT_IN_TABLE)
+        return users.slice(currentPage * MAX_ELEMENT_IN_TABLE, currentPage * MAX_ELEMENT_IN_TABLE + MAX_ELEMENT_IN_TABLE)
     }
 
     return (
@@ -126,7 +126,7 @@ export default function User() {
                             }
                         }
                     ]}
-                    instance={current_user}
+                    instance={currentUser}
                     onSubmit={createUser}
                     buttonText={"Отправить"}
                 />
@@ -147,7 +147,7 @@ export default function User() {
                       buttonText={"Отправить"}/>
             </Modal>
             <ModalButton connected_with={"multiple_users_modal"} button_text={"Загрузить через файл"}/>
-            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={current_page}
+            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={currentPage}
                        onPageChange={(page) => {
                            setCurrentPage(page)
                        }}/>
@@ -173,7 +173,7 @@ export default function User() {
                    onDelete={onDelete}
                    Sort={SortUsers}
             />
-            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={current_page}
+            <Paginator max_page={users.length / MAX_ELEMENT_IN_TABLE} current_page={currentPage}
                        onPageChange={(page) => {
                            setCurrentPage(page)
                        }}/>

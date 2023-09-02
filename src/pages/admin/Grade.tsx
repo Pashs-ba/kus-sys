@@ -11,7 +11,7 @@ import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js
 export default function Grade() {
     const [grades, setGrades] = useState([] as Grade[])
     const [users, setUsers] = useState([] as User[])
-    const [current_grade, setCurrentGrade] = useState({} as Grade)
+    const [currentGrade, setCurrentGrade] = useState({} as Grade)
     useEffect(() => {
         GetAllGrades().then((res) => {
             setGrades(res)
@@ -41,9 +41,9 @@ export default function Grade() {
         })
     }
 
-    function onSubmit(el) {
-        if (current_grade.id) {
-            el.id = current_grade.id
+    function OnSubmit(el) {
+        if (currentGrade.id) {
+            el.id = currentGrade.id
         }
         SendGrade(el).then(() => {
                 GetAllGrades().then((res) => {
@@ -54,12 +54,12 @@ export default function Grade() {
         )
     }
 
-    function onDelete(ids: number[]) {
+    function OnDelete(ids: number[]) {
         setGrades(grades.filter((el) => !ids.includes(el.id)))
         DeleteGrades(ids)
     }
 
-    function onEdit(el: Grade) {
+    function OnEdit(el: Grade) {
         setCurrentGrade(el)
         let modal = new BootstrapModal(document.getElementById("grade_modal"), {})
         modal.show()
@@ -122,8 +122,8 @@ export default function Grade() {
                         }
                     }
                 ]}
-                      instance={current_grade}
-                      onSubmit={onSubmit}/>
+                      instance={currentGrade}
+                      onSubmit={OnSubmit}/>
             </Modal>
             <ModalButton connected_with={"grade_modal"}
                          button_text={"Создание класса"}
@@ -152,8 +152,8 @@ export default function Grade() {
                    NeedDelete={true}
                    NeedEdit={true}
                    Sort={SortGrades}
-                   onDelete={onDelete}
-                   onEdit={onEdit}
+                   onDelete={OnDelete}
+                   onEdit={OnEdit}
             />
         </>
     )

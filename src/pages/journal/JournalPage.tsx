@@ -12,7 +12,6 @@ import MessageBlock from "../../components/messages/MessageBlock.tsx";
 import {addMessage} from "../../components/messages/messageSlice.ts";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
-import {MAX_LESSON_IN_PAGE} from "../../config.ts";
 import Paginator from "../../components/UI/Paginator.tsx";
 import {MonthNumberToName} from "../../utils/utils.ts";
 // import {Form} from "../../components/UI/Form.tsx";
@@ -22,7 +21,6 @@ export default function JournalPage() {
     const params = useParams()
     const [lessons, setLessons] = useState([] as Lesson[])
     const [page, setPage] = useState(0)
-    const [maxPage, setMaxPage] = useState(-1)
     const [grade, setGrade] = useState([] as User[])
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -31,7 +29,6 @@ export default function JournalPage() {
         GetJournalData({id: Number(params.journal_id)}).then(res => {
             setLessons(res.lessons)
             setGrade(res.grade.sort((a, b) => a.surname.localeCompare(b.surname)))
-            setMaxPage(res.lessons.length / MAX_LESSON_IN_PAGE)
         })
     }, [params.journal_id])
 
@@ -75,11 +72,6 @@ export default function JournalPage() {
         return Array.from(new Set(months))
     }
 
-
-    function GetMonthNumberFromName(name: string) {
-
-    }
-
     function GetLessonByPage() {
         let page_month = GetMonthsFromLessons()[page]
         return lessons.filter((value) => {
@@ -117,7 +109,7 @@ export default function JournalPage() {
                 <div className="col-10">
                     {
                         lessons.length > 0 ? (
-                            <div className={""}>
+                            <div>
                                 <Paginator max_page={GetMonthsFromLessons().length - 1}
                                            current_page={page}
                                            onPageChange={(new_page) => {

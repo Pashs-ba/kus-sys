@@ -10,7 +10,7 @@ import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js
 
 export default function SubjectAdminPage() {
     const [subjects, setSubjects] = useState([] as Subject[])
-    const [current_subject, setCurrentSubject] = useState({} as Subject)
+    const [currentSubject, setCurrentSubject] = useState({} as Subject)
     useEffect(() => {
         GetAllSubjects().then((res) => {
             setSubjects(res)
@@ -18,8 +18,8 @@ export default function SubjectAdminPage() {
     }, [])
 
     function onSubmit(el) {
-        if (current_subject.id) {
-            el.id = current_subject.id
+        if (currentSubject.id) {
+            el.id = currentSubject.id
         }
         SendSubject(el).then(() => {
             GetAllSubjects().then((res) => {
@@ -60,7 +60,7 @@ export default function SubjectAdminPage() {
                         {name: "name", label: "Название", type: ElementType.INPUT, settings: {}},
                     ]}
                     onSubmit={onSubmit}
-                    instance={current_subject}
+                    instance={currentSubject}
                 />
             </Modal>
             <ModalButton connected_with={"subject_modal"} button_text={"Создать предмет"}

@@ -3,7 +3,7 @@ import {AdminJournal, Grade, Plan, Subject, User} from "../../types/types.ts";
 import {
     DeleteAdminJournals,
     GetAllAdminJournals,
-    GetAllGrades, GetAllJournals,
+    GetAllGrades,
     GetAllPlans,
     GetAllSubjects,
     GetAllUsers, PrintJournal,
@@ -23,7 +23,7 @@ export default function Journal() {
     const [users, setUsers] = useState([] as User[])
     const [subjects, setSubjects] = useState([] as Subject[])
     const [plans, setPlans] = useState([] as Plan[])
-    const [current_journal, setCurrentJournal] = useState({} as AdminJournal)
+    const [currentJournals, setCurrentJournal] = useState({} as AdminJournal)
     useEffect(() => {
         GetAllAdminJournals().then((res) => {
             setJournals(res)
@@ -52,9 +52,9 @@ export default function Journal() {
         })
     }
 
-    function onSubmit(el: any) {
-        if (current_journal.id) {
-            el.id = current_journal.id
+    function OnSubmit(el: any) {
+        if (currentJournals.id) {
+            el.id = currentJournals.id
         }
         if (el.grade_id) {
             el.head_id = grades.find((el2) => el2.id === Number(el.grade_id))?.head_id
@@ -153,8 +153,8 @@ export default function Journal() {
                             settings: {}
                         }
                     ]}
-                    instance={current_journal}
-                    onSubmit={onSubmit}/>
+                    instance={currentJournals}
+                    onSubmit={OnSubmit}/>
             </Modal>
             <ModalButton connected_with={"journal_modal"}
                          button_text={"Создать журнал"}

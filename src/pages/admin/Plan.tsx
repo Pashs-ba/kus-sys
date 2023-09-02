@@ -11,7 +11,7 @@ import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js
 export default function Plan() {
     const [plans, setPlans] = useState([] as Plan[])
     const [subjects, setSubjects] = useState([] as Subject[])
-    const [current_plan, setCurrentPlan] = useState({} as Plan)
+    const [currentPlan, setCurrentPlan] = useState({} as Plan)
     useEffect(() => {
         GetAllPlans().then((res) => {
             // console.log(res)
@@ -37,8 +37,8 @@ export default function Plan() {
     }
 
     function onSubmit(el) {
-        if (current_plan.id) {
-            el.id = current_plan.id
+        if (currentPlan.id) {
+            el.id = currentPlan.id
         }
         CreatePlan(el).then(() => {
             GetAllPlans().then((res) => { //todo get by id
@@ -101,7 +101,7 @@ export default function Plan() {
                     }
                 ]}
                       instance={
-                          current_plan
+                          currentPlan
                       }
                       onSubmit={onSubmit}/>
             </Modal>

@@ -18,7 +18,7 @@ export function SideBarElement({
                     <i className={`bi ${icon}`} style={{"fontSize": "24px"}}/>
                     <span className={`ms-2 flex-grow-1 ${!tooltipOpen ? "invisible" : ""}`}
                           style={{
-                              transition: "opacity 1s visibility 1s",
+                              "transition": "opacity 1s",
                           }}
                     >{text}</span>
                 </div>

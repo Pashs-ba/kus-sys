@@ -16,7 +16,6 @@ export default function JournalHead({lessons}: { lessons: Lesson[] }) {
                     return <th key={el.id}>
                         <div className={"m-auto text-center"}
                              >{`${new Date(el.date_val).getDate()<10?'0':''}${new Date(el.date_val).getDate()}`}</div>
-                    {/*    style={{"writingMode": "vertical-rl", "textOrientation": "mixed"}}*/}
                     </th>
                 })
             }

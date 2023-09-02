@@ -1,7 +1,7 @@
 import {AdminJournal, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
-import {GetLocalUser} from "../utils/utils.ts";
+
 
 export function Auth({login, password}: { login: string, password: string }) {
     return new Promise<User>(async (resolve, reject) => {
@@ -139,7 +139,6 @@ export function CreatePlan(raw_plan: { name: string, file?: File, subject_id: nu
         if (raw_plan.id) {
             plan["id"] = raw_plan.id
         }
-        console.log(plan)
         await axios.post(`${API_PATH}/post/plan`, plan, config)
         resolve()
     })
