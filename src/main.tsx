@@ -9,6 +9,7 @@ import store from "./store/store.ts";
 import {BrowserRouter} from "react-router-dom";
 import AppRoutes from "./router/router.tsx";
 
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>
@@ -18,3 +19,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </Provider>
     </React.StrictMode>,
 )
+

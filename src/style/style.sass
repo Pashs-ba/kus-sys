@@ -11,3 +11,18 @@
 .overflowable
   max-height: calc(100vh - 56px)
   overflow: auto
+
+@keyframes test
+  from
+    opacity: 0
+  to
+    opacity: 100
+
+.animated
+  animation-name: test
+  animation-duration: 1s
+
+.invisible
+  opacity: 0
+  position: absolute
+  visibility: hidden

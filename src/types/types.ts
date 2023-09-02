@@ -57,3 +57,9 @@ export type AdminJournal = {
     schedule: string
     methodist_id: number
 }
+
+export type SideBarElementType = {
+    text: string,
+    icon: string,
+    href: string
+}
