@@ -7,7 +7,7 @@ import {GetLocalUser} from "../../utils/utils.ts";
 import LoadingComponent from "../UI/LoadingComponent.tsx";
 
 export default function JournalSelect({GetJournal}: { GetJournal: (result: Journal[]) => void }) {
-    const [journals, setJournals] = useState<Journal[]>([])
+    const [journals, setJournals] = useState<Journal[]>([{id: -1, grade: -1, subject: ""}])
     const user = GetLocalUser()
 
     useEffect(() => {
@@ -36,39 +36,42 @@ export default function JournalSelect({GetJournal}: { GetJournal: (result: Journ
 
     return (
         <>
-            {journals.length > 0 ?
-                <Form
-                    additionalClasses={"mt-3"}
-                    elements={[
-                        {
-                            type: ElementType.SMART_SELECT,
-                            name: "grade",
-                            label: "Класс",
-                            settings: {
-                                options: [
-                                    ...GetGradesFromJournals(journals)
-                                ]
+            {journals[0] ?
+                journals[0].id !== -1 ? (
+                    <Form
+                        additionalClasses={"mt-3"}
+                        elements={[
+                            {
+                                type: ElementType.SMART_SELECT,
+                                name: "grade",
+                                label: "Класс",
+                                settings: {
+                                    options: [
+                                        ...GetGradesFromJournals(journals)
+                                    ]
+                                }
+                            },
+                            {
+                                type: ElementType.SMART_SELECT,
+                                name: "subject",
+                                label: "Предмет",
+                                settings: {
+                                    options: [
+                                        ...GetSubjectsFromJournals(journals)
+                                    ]
+                                }
                             }
-                        },
-                        {
-                            type: ElementType.SMART_SELECT,
-                            name: "subject",
-                            label: "Предмет",
-                            settings: {
-                                options: [
-                                    ...GetSubjectsFromJournals(journals)
-                                ]
-                            }
-                        }
-                    ]}
-                    onSubmit={(el) => {
-                        GetJournal(journals.filter((journal) => {
-                            return journal.grade === el.grade && journal.subject === el.subject
-                        }))
-                    }}
-                    buttonText={"Открыть журнал"}
-                />
-                : <LoadingComponent/>
+                        ]}
+                        onSubmit={(el) => {
+                            GetJournal(journals.filter((journal) => {
+                                return journal.grade === el.grade && journal.subject === el.subject
+                            }))
+                        }}
+                        buttonText={"Открыть журнал"}
+                    />) : <LoadingComponent/>
+                : (
+                    <h3 className={"text-center m-0"}>У вас нет журналов!</h3>
+                )
             }
         </>
 

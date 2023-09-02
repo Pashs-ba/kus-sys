@@ -26,7 +26,6 @@ export default function SelectJournalPage() {
 
             <div className={"row justify-content-center align-items-center full-height"}>
                 <div className="col-lg-4">
-
                     <Card>
                         <MessageBlock/>
                         <JournalSelect GetJournal={GetJournal}/>
