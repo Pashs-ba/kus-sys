@@ -1,7 +1,11 @@
 import {User} from "../types/types.ts";
 
 export function GetLocalUser(): User {
-    return JSON.parse(localStorage.getItem("user") || "{}")
+    return JSON.parse(localStorage.getItem("user") || "false")
+}
+
+export function DeleteLocalUser() {
+    localStorage.removeItem("user")
 }
 
 export function MonthNumberToName(month: number) {

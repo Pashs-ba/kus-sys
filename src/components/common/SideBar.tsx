@@ -2,9 +2,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import {useState} from "react";
 import {SideBarElement} from "./SideBarElement.tsx";
 import {SideBarElementType} from "../../types/types.ts";
+import {DeleteLocalUser, GetLocalUser} from "../../utils/utils.ts";
 
 export default function SideBar({elements}: { elements: SideBarElementType[] }) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
+    const user = GetLocalUser()
     return (
         <div className="d-flex flex-column flex-shrink-0 bg-body-tertiary full-height"
              onMouseEnter={(el) => {
@@ -15,7 +17,8 @@ export default function SideBar({elements}: { elements: SideBarElementType[] }) 
              }}
         >
             <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
-                {elements.map((el, index) => <SideBarElement key={index} text={el.text} icon={el.icon} tooltipOpen={tooltipOpen} href={el.href}/>)}
+                {elements.map((el, index) => <SideBarElement key={index} text={el.text} icon={el.icon}
+                                                             tooltipOpen={tooltipOpen} href={el.href}/>)}
             </ul>
             <div className="dropdown border-top">
                 <a href="#"
@@ -24,7 +27,12 @@ export default function SideBar({elements}: { elements: SideBarElementType[] }) 
                     <i className="bi bi-person-circle" style={{"fontSize": "24px"}}></i>
                 </a>
                 <ul className="dropdown-menu text-small shadow">
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
+                    {user ?
+                        <li><a className="dropdown-item" href="#" onClick={() => {
+                            DeleteLocalUser();
+                            window.location.reload();
+                        }}>Выход</a></li>
+                        : ""}
                 </ul>
             </div>
         </div>

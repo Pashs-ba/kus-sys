@@ -18,7 +18,7 @@ export default function Login() {
                 type: "success",
                 text: "Авторизация прошла успешно"
             }))
-            navigate("/")
+            window.location.href = "/"
         }).catch(() => {
             dispatch(addMessage({
                 type: "danger",

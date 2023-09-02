@@ -1,4 +1,4 @@
-import NavBar from "./components/UI/NavBar.tsx";
+import NavBar from "./components/common/NavBar.tsx";
 import {Outlet} from "react-router";
 import SideBar from "./components/common/SideBar.tsx";
 import {GetLocalUser} from "./utils/utils.ts";
@@ -19,7 +19,7 @@ function App() {
                 add.push({text: "Журнал", icon: "bi-book", href: "/journal"})
             }
             if (user.role.some(role => role.includes("add"))) {
-                add.push({text: "Управление", icon: "bi-gear", href: "/add"})
+                add.push({text: "Управление", icon: "bi-gear", href: "/admin"})
             }
         }
         setSideBarElements([...SideBarElements, ...add])
