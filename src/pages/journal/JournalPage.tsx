@@ -87,7 +87,6 @@ export default function JournalPage() {
         })
     }
 
-
     return (
         <div className={"full-height"}>
             <MessageBlock/>
@@ -96,24 +95,56 @@ export default function JournalPage() {
             </Modal>
             <ModalButton connected_with={"select_journal_modal"} additionalClasses={"m-3"}
                          button_text={"Выбор журнала"}/>
-            {
-                lessons.length > 0 ? (
-                    <div className={"mx-5"}>
-                        <Paginator max_page={GetMonthsFromLessons().length - 1}
-                                   current_page={page}
-                                   onPageChange={(new_page) => {
-                                       setPage(new_page)
-                                   }}
-                                   custom_page_names={GetMonthsFromLessons().map((month) => MonthNumberToName(month))}
-                        />
-                        <table className={"table table-striped table-bordered"}>
-                            <JournalHead lessons={GetLessonByPage()}/>
-                            <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
-                        </table>
+            <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#theme"
+                    aria-controls="offcanvasRight">Список тем
+            </button>
+            <div className="offcanvas offcanvas-end" id="theme">
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="offcanvasRightLabel">Темы</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div className="offcanvas-body">
+                    <ul className={"list-group"}>
+                        {
+                            lessons.map((el, index) => {
+                                return <li className={"list-group-item"} key={index}>{el.theme.name}</li>
+                            })
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div className="row mx-5">
+                <div className="col-10">
+                    {
+                        lessons.length > 0 ? (
+                            <div className={""}>
+                                <Paginator max_page={GetMonthsFromLessons().length - 1}
+                                           current_page={page}
+                                           onPageChange={(new_page) => {
+                                               setPage(new_page)
+                                           }}
+                                           custom_page_names={GetMonthsFromLessons().map((month) => MonthNumberToName(month))}
+                                />
+                                <table className={"table table-striped table-bordered"}>
+                                    <JournalHead lessons={GetLessonByPage()}/>
+                                    <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
+                                </table>
 
-                    </div>
-                ) : <LoadingComponent/>
-            }
+                            </div>
+                        ) : <LoadingComponent/>
+                    }
+                </div>
+                <div className="col-2 overflow-auto" style={{"maxHeight": "80vh"}}>
+                    <ul className={"list-group"}>
+                    {
+                        lessons.map((el, index) => {
+                            return <li className={"list-group-item"} key={index}>{el.theme.name}</li>
+                        })
+                    }
+                    </ul>
+                </div>
+            </div>
+
         </div>
     )
 
