@@ -6,14 +6,23 @@ import {useEffect, useState} from "react";
 import {SideBarElementType} from "./types/types.ts";
 
 function App() {
-    const [SideBarElements, setSideBarElements] = useState([{text: "Домашняя страница", icon: "bi bi-house", href: "/"}] as SideBarElementType[])
+    const [SideBarElements, setSideBarElements] = useState([{
+        text: "Домашняя страница",
+        icon: "bi-house",
+        href: "/"
+    }] as SideBarElementType[])
     useEffect(() => {
         const user = GetLocalUser()
-        if (user){
-            if (user.role.includes("teacher")){
-                setSideBarElements([...SideBarElements, {text: "Журнал", icon: "bi bi-book", href: "/journal"}])
+        const add = [] as SideBarElementType[]
+        if (user) {
+            if (user.role.includes("teacher")) {
+                add.push({text: "Журнал", icon: "bi-book", href: "/journal"})
+            }
+            if (user.role.some(role => role.includes("add"))) {
+                add.push({text: "Управление", icon: "bi-gear", href: "/add"})
             }
         }
+        setSideBarElements([...SideBarElements, ...add])
     }, [])
     return (
         <>
