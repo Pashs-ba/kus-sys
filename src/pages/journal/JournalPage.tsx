@@ -81,7 +81,7 @@ export default function JournalPage() {
 
     function GetMonthDay(raw_date: string) {
         const date = new Date(raw_date)
-        const month = date.getMonth()
+        const month = date.getMonth()+1
         const day = date.getDate()
         return `${day > 9 ? day : "0" + day}.${month > 9 ? month : "0" + month}`
     }
