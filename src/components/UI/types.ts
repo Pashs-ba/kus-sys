@@ -107,3 +107,8 @@ export type ScheduleFieldType = BaseElement & {
     value?: string,
     onInput?: (el: any) => void
 }
+
+export type ComboboxFieldType = {
+    label: string
+    options: string[]
+}

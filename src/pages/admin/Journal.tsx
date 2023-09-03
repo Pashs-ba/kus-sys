@@ -155,6 +155,9 @@ export default function Journal() {
                     ]}
                     instance={currentJournals}
                     onSubmit={OnSubmit}/>
+                {/*<form>*/}
+                {/*<ComboBox label={"Тест"} options={["Первое", "ВТорое", "Третье"]}/>*/}
+                {/*</form>*/}
             </Modal>
             <ModalButton connected_with={"journal_modal"}
                          button_text={"Создать журнал"}

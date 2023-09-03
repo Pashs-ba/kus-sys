@@ -79,34 +79,23 @@ export default function JournalPage() {
         })
     }
 
+    function GetMonthDay(raw_date: string) {
+        const date = new Date(raw_date)
+        const month = date.getMonth()
+        const day = date.getDate()
+        return `${day > 9 ? day : "0" + day}.${month > 9 ? month : "0" + month}`
+    }
+
     return (
-        <div className={"full-height"}>
+        <div className={"full-height mx-5"}>
             <MessageBlock/>
             <Modal connected_with={"select_journal_modal"} title={"Выбор журнала"}>
                 <JournalSelect GetJournal={GetJournal}/>
             </Modal>
             <ModalButton connected_with={"select_journal_modal"} additionalClasses={"m-3"}
                          button_text={"Выбор журнала"}/>
-            <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#theme"
-                    aria-controls="offcanvasRight">Список тем
-            </button>
-            <div className="offcanvas offcanvas-end" id="theme">
-                <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasRightLabel">Темы</h5>
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-                    <ul className={"list-group"}>
-                        {
-                            lessons.map((el, index) => {
-                                return <li className={"list-group-item"} key={index}>{el.theme.name}</li>
-                            })
-                        }
-                    </ul>
-                </div>
-            </div>
-            <div className="row mx-5">
-                <div className="col-10">
+            <div className="row">
+                <div className="col-lg-10 col-12">
                     {
                         lessons.length > 0 ? (
                             <div>
@@ -126,14 +115,21 @@ export default function JournalPage() {
                         ) : <LoadingComponent/>
                     }
                 </div>
-                <div className="col-2 overflow-auto" style={{"maxHeight": "80vh"}}>
-                    <ul className={"list-group"}>
-                    {
-                        lessons.map((el, index) => {
-                            return <li className={"list-group-item"} key={index}>{el.theme.name}</li>
-                        })
-                    }
-                    </ul>
+                <div className="col-2 overflow-auto d-none d-lg-block" style={{"maxHeight": "80vh"}}>
+                    <table className={"table table-bordered table-striped"}>
+                        <tbody>
+                        {
+                            GetLessonByPage().map((el, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td style={{"verticalAlign": "middle"}}>{GetMonthDay(el.date_val)}</td>
+                                        <td>{el.theme.name}</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
