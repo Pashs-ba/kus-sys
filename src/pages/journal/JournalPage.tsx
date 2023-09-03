@@ -87,7 +87,7 @@ export default function JournalPage() {
     }
 
     return (
-        <div className={"full-height mx-5"}>
+        <div className={"full-height"}>
             <MessageBlock/>
             <Modal connected_with={"select_journal_modal"} title={"Выбор журнала"}>
                 <JournalSelect GetJournal={GetJournal}/>

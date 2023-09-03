@@ -31,7 +31,7 @@ function App() {
                 <div className={"full-height"}>
                     <SideBar elements={SideBarElements}/>
                 </div>
-                <div className={"flex-grow-1 overflowable"}>
+                <div className={"flex-grow-1 overflowable mx-5"}>
                     <Outlet/>
                 </div>
             </div>
