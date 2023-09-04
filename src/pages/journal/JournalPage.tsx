@@ -14,6 +14,7 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import Paginator from "../../components/UI/Paginator.tsx";
 import {MonthNumberToName} from "../../utils/utils.ts";
+import ThemeList from "../../components/journal/ThemeList.tsx";
 // import {Form} from "../../components/UI/Form.tsx";
 // import {ElementType} from "../../components/UI/types.ts";
 
@@ -79,61 +80,38 @@ export default function JournalPage() {
         })
     }
 
-    function GetMonthDay(raw_date: string) {
-        const date = new Date(raw_date)
-        const month = date.getMonth()+1
-        const day = date.getDate()
-        return `${day > 9 ? day : "0" + day}.${month > 9 ? month : "0" + month}`
-    }
 
     return (
-        <div className={"full-height"}>
+        <>
             <MessageBlock/>
             <Modal connected_with={"select_journal_modal"} title={"Выбор журнала"}>
                 <JournalSelect GetJournal={GetJournal}/>
             </Modal>
             <ModalButton connected_with={"select_journal_modal"} additionalClasses={"m-3"}
                          button_text={"Выбор журнала"}/>
-            <div className="row">
-                <div className="col-lg-10 col-12">
-                    {
-                        lessons.length > 0 ? (
-                            <div>
-                                <Paginator max_page={GetMonthsFromLessons().length - 1}
-                                           current_page={page}
-                                           onPageChange={(new_page) => {
-                                               setPage(new_page)
-                                           }}
-                                           custom_page_names={GetMonthsFromLessons().map((month) => MonthNumberToName(month))}
-                                />
-                                <table className={"table table-striped table-bordered"}>
-                                    <JournalHead lessons={GetLessonByPage()}/>
-                                    <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
-                                </table>
-
-                            </div>
-                        ) : <LoadingComponent/>
-                    }
-                </div>
-                <div className="col-2 overflow-auto d-none d-lg-block" style={{"maxHeight": "80vh"}}>
-                    <table className={"table table-bordered table-striped"}>
-                        <tbody>
-                        {
-                            GetLessonByPage().map((el, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td style={{"verticalAlign": "middle"}}>{GetMonthDay(el.date_val)}</td>
-                                        <td>{el.theme.name}</td>
-                                    </tr>
-                                )
-                            })
-                        }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
+            {
+                lessons.length > 0 ? (
+                    <div className="row m-0 p-0">
+                        <div className="col-lg-10 col-12">
+                            <Paginator max_page={GetMonthsFromLessons().length - 1}
+                                       current_page={page}
+                                       onPageChange={(new_page) => {
+                                           setPage(new_page)
+                                       }}
+                                       custom_page_names={GetMonthsFromLessons().map((month) => MonthNumberToName(month))}
+                            />
+                            <table className={"table table-striped table-bordered"}>
+                                <JournalHead lessons={GetLessonByPage()}/>
+                                <JournalBody grade={grade} lessons={GetLessonByPage()} onMarkChange={onMarkChange}/>
+                            </table>
+                        </div>
+                        <div className="col-2 overflow-auto d-none d-lg-block" style={{"maxHeight": "80vh"}}>
+                            <ThemeList lessons={GetLessonByPage()}/>
+                        </div>
+                    </div>
+                ) : <LoadingComponent/>
+            }
+        </>
     )
 
 }
