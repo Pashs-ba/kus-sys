@@ -67,14 +67,16 @@ export enum ElementType {
     RADIO,
     FILE,
     SMART_SELECT,
-    SCHEDULE
+    SCHEDULE,
+    COMBOBOX
+
 }
 
 export type FormElementType = {
     name: string
     label: string
     type: ElementType
-    settings: BaseInputType | BaseSelectType | BaseCheckboxType | BaseTextAreaType | BaseRadioType | BaseFileType | SmartSelectType
+    settings: BaseInputType | BaseSelectType | BaseCheckboxType | BaseTextAreaType | BaseRadioType | BaseFileType | SmartSelectType | ComboboxFieldType
 }
 
 export type FormType = {
@@ -109,6 +111,12 @@ export type ScheduleFieldType = BaseElement & {
 }
 
 export type ComboboxFieldType = {
+    options: ComboboxOptionsType[]
+    value?: string
+    onInput?: (el: any) => void
+}
+
+export type ComboboxOptionsType = {
     label: string
-    options: string[]
+    id: string
 }

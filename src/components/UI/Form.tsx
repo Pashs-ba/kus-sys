@@ -7,8 +7,10 @@ import {
     BaseRadioType,
     BaseSelectType,
     BaseTextAreaType,
+    ComboboxFieldType,
     ElementType,
-    FormType, ScheduleFieldType,
+    FormType,
+    ScheduleFieldType,
     SmartSelectType
 } from "./types.ts";
 import {ReactElement, useEffect, useState} from "react";
@@ -20,6 +22,7 @@ import BaseRadio from "./BaseRadio.tsx";
 import BaseFile from "./BaseFile.tsx";
 import SmartSelect from "./SmartSelect.tsx";
 import ScheduleInput from "./ScheduleInput.tsx";
+import ComboBox from "./ComboBox.tsx";
 
 export function Form({
                          elements,
@@ -41,40 +44,6 @@ export function Form({
         }
     }, [])
 
-    // function get_value_from_select(el: FormElementType) {
-    //     let settings = el.settings as BaseSelectType
-    //     let ans = settings.multiple ? [] as string[] : settings.options[0].value
-    //     settings.options.map((option) => {
-    //         if (option.selected) {
-    //             if (settings.multiple) {
-    //                 (ans as string[]).push(option.value)
-    //             } else {
-    //                 ans = option.value
-    //             }
-    //         }
-    //     })
-    //     return ans
-    // }
-
-    // function get_value(el: FormElementType): any {
-    //     switch (el.type) {
-    //         case ElementType.INPUT:
-    //             return (el.settings as BaseInputType).value ? (el.settings as BaseInputType).value : "";
-    //         case ElementType.SELECT:
-    //             return get_value_from_select(el)
-    //         case ElementType.CHECKBOX:
-    //             return (el.settings as BaseCheckboxType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
-    //         case ElementType.TEXTAREA:
-    //             return (el.settings as BaseTextAreaType).value ? (el.settings as BaseInputType).value : "";
-    //         case ElementType.RADIO:
-    //             return (el.settings as BaseRadioType).checked === undefined ? false : (el.settings as BaseCheckboxType).checked
-    //         case ElementType.FILE:
-    //             return null
-    //         case ElementType.SMART_SELECT:
-    //             return get_value_from_select(el)
-    //     }
-    // }
-
     useEffect(() => {
         const new_values = {}
         elements.map((el) => {
@@ -93,8 +62,6 @@ export function Form({
                 new_values[el.name] = instance[el.name]
             }
         })
-
-
         change_form_values(new_values)
     }, [elements, instance])
 
@@ -228,14 +195,38 @@ export function Form({
             />
         )
     }
-    function create_schedule_input(settings: ScheduleFieldType, name:string){
-        return(
-            <ScheduleInput value={instance?instance[name]:""}
+
+    function create_schedule_input(settings: ScheduleFieldType, name: string) {
+        return (
+            <ScheduleInput value={instance ? instance[name] : ""}
                            additionalClasses={settings.additionalClasses}
-                           onInput={(el)=>{
+                           onInput={(el) => {
                                element_value_change(el, name)
                            }}
             />
+        )
+    }
+
+    function create_combobox(settings: ComboboxFieldType, name: string, label: string) {
+        function GetValue(){
+            if (instance){
+                const res = settings.options.find((option)=>{return option.id == instance[name]})?.label
+                if (res){
+                    return res
+                }
+            }
+            return ""
+        }
+        return (
+            <ComboBox label={label}
+                      real_options={settings.options.map((option) => option.label)}
+                      value={GetValue()}
+                      onInput={(el) => {
+                          const option = settings.options.find((option)=>{return option.label === el})
+                          if (option) {
+                              element_value_change(option.id, name)
+                          }
+                      }}/>
         )
     }
 
@@ -266,23 +257,34 @@ export function Form({
             case ElementType.SCHEDULE:
                 rendered_element = create_schedule_input(element.settings as ScheduleFieldType, element.name)
                 break
+            case ElementType.COMBOBOX:
+                rendered_element = create_combobox(element.settings as ComboboxFieldType, element.name, element.label)
+                break
         }
-        if (element.type == ElementType.CHECKBOX || element.type == ElementType.RADIO) {
-            return (
-                <div className={`${horizontal ? "me-3" : "mb-3"} form-check`} key={element.name}>
-                    {rendered_element}
-                    <label className={"form-check-label"}>{element.label}</label>
-                </div>
-            )
-        } else {
-            return (
-                <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
-                    <label className={"form-label"}>{element.label}</label>
-                    {rendered_element}
-                </div>
-            )
+        switch (element.type) {
+            case ElementType.CHECKBOX:
+            case ElementType.RADIO:
+                return (
+                    <div className={`${horizontal ? "me-3" : "mb-3"} form-check`} key={element.name}>
+                        {rendered_element}
+                        <label className={"form-check-label"}>{element.label}</label>
+                    </div>
+                )
+            case ElementType.COMBOBOX:
+                return (
+                    <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
+                        {rendered_element}
+                    </div>
+                )
+            default:
+                return (
+                    <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
+                        <label className={"form-label"}>{element.label}</label>
+                        {rendered_element}
+                    </div>
+                )
+        }
 
-        }
     })
 
     return (

@@ -13,9 +13,10 @@ import Table from "../../components/UI/Table.tsx";
 import Modal from "../../components/UI/Modal.tsx";
 import ModalButton from "../../components/UI/ModalButton.tsx";
 import {Form} from "../../components/UI/Form.tsx";
-import {ElementType, SelectNodes} from "../../components/UI/types.ts";
+import {ComboboxOptionsType, ElementType, SelectNodes} from "../../components/UI/types.ts";
 import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
 import {GetLocalUser} from "../../utils/utils.ts";
+import ComboBox from "../../components/UI/ComboBox.tsx";
 
 export default function Journal() {
     const [journals, setJournals] = useState([] as AdminJournal[])
@@ -56,15 +57,16 @@ export default function Journal() {
         if (currentJournals.id) {
             el.id = currentJournals.id
         }
-        if (el.grade_id) {
-            el.head_id = grades.find((el2) => el2.id === Number(el.grade_id))?.head_id
-        }
-        el.methodist_id = GetLocalUser().id
-        SendAdminJournal(el).then(() => {
-            GetAllAdminJournals().then((res) => {
-                setJournals(res)
-            })
-        })
+        console.log(el)
+        // if (el.grade_id) {
+        //     el.head_id = grades.find((el2) => el2.id === Number(el.grade_id))?.head_id
+        // }
+        // el.methodist_id = GetLocalUser().id
+        // SendAdminJournal(el).then(() => {
+        //     GetAllAdminJournals().then((res) => {
+        //         setJournals(res)
+        //     })
+        // })
     }
 
     function GetDataByField(field: string, journal: AdminJournal) {
@@ -102,14 +104,14 @@ export default function Journal() {
                         {
                             label: "Класс",
                             name: "grade_id",
-                            type: ElementType.SMART_SELECT,
+                            type: ElementType.COMBOBOX,
                             settings: {
                                 options: grades.map((el) => {
                                     return {
-                                        value: el.id,
-                                        text: el.name
-                                    } as SelectNodes
-                                })
+                                        id: el.id,
+                                        label: el.name
+                                    } as ComboboxOptionsType
+                                }),
                             }
                         },
                         {
@@ -155,9 +157,8 @@ export default function Journal() {
                     ]}
                     instance={currentJournals}
                     onSubmit={OnSubmit}/>
-                {/*<form>*/}
-                {/*<ComboBox label={"Тест"} options={["Первое", "ВТорое", "Третье"]}/>*/}
-                {/*</form>*/}
+
+
             </Modal>
             <ModalButton connected_with={"journal_modal"}
                          button_text={"Создать журнал"}
@@ -209,7 +210,7 @@ export default function Journal() {
                         name: "id",
                         checkbox: {
                             onButtonClick: (el) => {
-                                PrintJournal(el).then((res)=>{
+                                PrintJournal(el).then((res) => {
                                     window.open(res)
                                 })
                             }
