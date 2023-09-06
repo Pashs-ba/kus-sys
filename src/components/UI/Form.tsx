@@ -215,7 +215,6 @@ export function Form({
                     return res
                 }
             }
-            return ""
         }
         return (
             <ComboBox label={label}

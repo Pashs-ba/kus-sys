@@ -6,11 +6,11 @@ export default function ComboBox({label, onInput, value, real_options}: {
     label: string,
     real_options: string[],
     onInput?: (el: any) => void,
-    value: string
+    value?: string
 }) {
-    const [current_value, setCurrentValue] = useState(value?value:"")
+    const [current_value, setCurrentValue] = useState(value?value:null)
     useEffect(() => {
-        setCurrentValue(value)
+        setCurrentValue(value?value:null)
     }, [value]);
     return (
         <Autocomplete
@@ -34,9 +34,7 @@ export default function ComboBox({label, onInput, value, real_options}: {
                 }
             }
             options={
-                [
-                    ...real_options, ""
-                ]
+                real_options
             }
         />
     )
