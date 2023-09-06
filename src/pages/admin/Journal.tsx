@@ -47,8 +47,8 @@ export default function Journal() {
         let not_student = users.filter((el) => !el.role.includes("student"))
         return not_student.map((el) => {
             return {
-                value: el.id,
-                text: `${el.surname} ${el.name[0]}.`
+                id: el.id,
+                label: `${el.surname} ${el.name[0]}.`
             } as SelectNodes
         })
     }
@@ -117,33 +117,33 @@ export default function Journal() {
                         {
                             label: "Предмет",
                             name: "subject_id",
-                            type: ElementType.SMART_SELECT,
+                            type: ElementType.COMBOBOX,
                             settings: {
                                 options: subjects.map((el) => {
                                     return {
-                                        value: el.id,
-                                        text: el.name
-                                    } as SelectNodes
+                                        id: el.id,
+                                        label: el.name
+                                    } as ComboboxOptionsType
                                 })
                             }
                         },
                         {
                             label: "План",
                             name: "plan_id",
-                            type: ElementType.SMART_SELECT,
+                            type: ElementType.COMBOBOX,
                             settings: {
                                 options: plans.map((el) => {
                                     return {
-                                        value: el.id,
-                                        text: el.name
-                                    } as SelectNodes
+                                        id: el.id,
+                                        label: el.name
+                                    } as ComboboxOptionsType
                                 })
                             }
                         },
                         {
                             label: "Учитель",
                             name: "teacher_id",
-                            type: ElementType.SMART_SELECT,
+                            type: ElementType.COMBOBOX,
                             settings: {
                                 options: GetOptionsFromUsers()
                             }

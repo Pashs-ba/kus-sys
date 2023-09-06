@@ -9,7 +9,7 @@ export type User = {
 
 export type Journal = {
     id: number
-    grade: number
+    grade: string
     subject: string
 }
 

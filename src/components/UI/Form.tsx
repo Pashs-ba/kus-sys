@@ -272,7 +272,7 @@ export function Form({
                 )
             case ElementType.COMBOBOX:
                 return (
-                    <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
+                    <div className={`${horizontal ? "me-3" : "mb-3"} d-flex justify-content-center`} key={element.name}>
                         {rendered_element}
                     </div>
                 )

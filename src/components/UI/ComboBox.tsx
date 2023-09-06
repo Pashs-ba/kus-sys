@@ -10,7 +10,6 @@ export default function ComboBox({label, onInput, value, real_options}: {
 }) {
     const [current_value, setCurrentValue] = useState(value?value:"")
     useEffect(() => {
-        console.log("boo")
         setCurrentValue(value)
     }, [value]);
     return (
