@@ -9,6 +9,7 @@ export function ScheduleElement({weekday, value, onInput}: {
     const [value_fixed, set_value_fixed] = useState(value)
     useEffect(() => {
         set_value_fixed(value)
+
     }, [value])
     return (
         <div className="row align-items-center justify-content-center mb-3">
@@ -19,11 +20,11 @@ export function ScheduleElement({weekday, value, onInput}: {
                 <BaseInput
                     type={"number"}
                     min={0}
-                    max={23}
+                    max={24}
                     value={value_fixed}
                     onInput={(el) => {
                         if (onInput) {
-                            onInput(el.currentTarget.value)
+                            onInput(el)
                         }
                     }}
                 />

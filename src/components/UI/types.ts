@@ -6,15 +6,14 @@ type BaseElement = {
     additionalClasses?: string
 }
 
-export type BaseInputType = BaseElement & {
-    placeholder?: string,
+export type BaseInputType = {
+    label?: string
+    type?: string
     value?: any
-    type?: string,
-    min?: number,
+    min?: number
     max?: number
+    size?: string
     onInput?: (el: any) => void
-    onKeyPress?: (el: any) => void
-    size?: number
 }
 
 export type SelectNodes = {

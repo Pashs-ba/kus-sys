@@ -1,5 +1,4 @@
 import {Autocomplete, TextField} from "@mui/material";
-import {ComboboxFieldType, ComboboxOptionsType} from "./types.ts";
 import {useEffect, useState} from "react";
 
 export default function ComboBox({label, onInput, value, real_options}: {
@@ -22,12 +21,13 @@ export default function ComboBox({label, onInput, value, real_options}: {
                     onInput(newValue)
                 }
             }}
-            sx={{width: 300}}
+            sx={{width: 1}}
             value={current_value}
             renderInput={
                 (params) => {
                     return (
                         <TextField {...params}
+                            size={"small"}
                                    label={label}
                         />
                     )

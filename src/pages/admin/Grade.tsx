@@ -5,7 +5,7 @@ import Table from "../../components/UI/Table.tsx";
 import Modal from "../../components/UI/Modal.tsx";
 import ModalButton from "../../components/UI/ModalButton.tsx";
 import {Form} from "../../components/UI/Form.tsx";
-import {ElementType, SelectNodes} from "../../components/UI/types.ts";
+import {ComboboxOptionsType, ElementType, SelectNodes} from "../../components/UI/types.ts";
 import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
 
 export default function Grade() {
@@ -21,23 +21,23 @@ export default function Grade() {
         })
     }, [])
 
-    function GetOptionsFromUsers(): SelectNodes[] {
+    function GetOptionsFromUsers(): ComboboxOptionsType[] {
         let not_student = users.filter((el) => !el.role.includes("student"))
         return not_student.map((el) => {
             return {
-                value: el.id,
-                text: `${el.surname} ${el.name[0]}.`
-            } as SelectNodes
+                id: el.id,
+                label: `${el.surname} ${el.name[0]}.`
+            } as ComboboxOptionsType
         })
     }
 
-    function GetStudentsOptions(): SelectNodes[] {
+    function GetStudentsOptions(): ComboboxOptionsType[] {
         let students = users.filter((el) => el.role.includes("student"))
         return students.map((el) => {
             return {
-                value: el.id,
-                text: `${el.surname} ${el.name[0]}.`
-            } as SelectNodes
+                id: el.id,
+                label: `${el.surname} ${el.name[0]}.`
+            } as ComboboxOptionsType
         })
     }
 
@@ -106,7 +106,7 @@ export default function Grade() {
                     {
                         name: "head_id",
                         label: "Руководитель",
-                        type: ElementType.SMART_SELECT,
+                        type: ElementType.COMBOBOX,
                         settings: {
                             options: GetOptionsFromUsers()
                         }
@@ -114,7 +114,7 @@ export default function Grade() {
                     {
                         name: "student",
                         label: "Ученики",
-                        type: ElementType.SMART_SELECT,
+                        type: ElementType.COMBOBOX,
                         settings: {
                             options: GetStudentsOptions(),
                             multiple: true,

@@ -69,18 +69,14 @@ export function Form({
         change_form_values({...form_values, [name]: el})
     }
 
-    function create_input(settings: BaseInputType, name: string) {
+    function create_input(settings: BaseInputType, name: string, label: string) {
         return (
-            <BaseInput placeholder={settings.placeholder}
-                       value={instance ? instance[name] : ""}
-                       disabled={settings.disabled}
-                       type={settings.type}
-                       min={settings.min}
-                       max={settings.max}
-                       required={settings.required}
-                       additionalClasses={settings.additionalClasses}
+            <BaseInput
+                value={instance? instance[name] : null}
+                label={label}
+                type={settings.type}
                        onInput={(el) => {
-                           element_value_change(el.currentTarget.value, name)
+                           element_value_change(el, name)
                        }}
             />
         )
@@ -233,7 +229,7 @@ export function Form({
         let rendered_element: ReactElement
         switch (element.type) {
             case ElementType.INPUT:
-                rendered_element = create_input(element.settings as BaseInputType, element.name)
+                rendered_element = create_input(element.settings as BaseInputType, element.name, element.label)
                 break
             case ElementType.SELECT:
                 rendered_element = create_select(element.settings as BaseSelectType, element.name)
@@ -269,16 +265,9 @@ export function Form({
                         <label className={"form-check-label"}>{element.label}</label>
                     </div>
                 )
-            case ElementType.COMBOBOX:
-                return (
-                    <div className={`${horizontal ? "me-3" : "mb-3"} d-flex justify-content-center`} key={element.name}>
-                        {rendered_element}
-                    </div>
-                )
             default:
                 return (
-                    <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
-                        <label className={"form-label"}>{element.label}</label>
+                    <div className={`${horizontal ? "me-4" : "mb-4"}`} key={element.name}>
                         {rendered_element}
                     </div>
                 )
