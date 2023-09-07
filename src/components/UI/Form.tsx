@@ -72,12 +72,12 @@ export function Form({
     function create_input(settings: BaseInputType, name: string, label: string) {
         return (
             <BaseInput
-                value={instance? instance[name] : null}
+                value={instance ? instance[name] : null}
                 label={label}
                 type={settings.type}
-                       onInput={(el) => {
-                           element_value_change(el, name)
-                       }}
+                onInput={(el) => {
+                    element_value_change(el, name)
+                }}
             />
         )
     }
@@ -204,20 +204,25 @@ export function Form({
     }
 
     function create_combobox(settings: ComboboxFieldType, name: string, label: string) {
-        function GetValue(){
-            if (instance){
-                const res = settings.options.find((option)=>{return option.id == instance[name]})?.label
-                if (res){
+        function GetValue() {
+            if (instance) {
+                const res = settings.options.find((option) => {
+                    return option.id == instance[name]
+                })?.label
+                if (res) {
                     return res
                 }
             }
         }
+
         return (
             <ComboBox label={label}
                       real_options={settings.options.map((option) => option.label)}
                       value={GetValue()}
                       onInput={(el) => {
-                          const option = settings.options.find((option)=>{return option.label === el})
+                          const option = settings.options.find((option) => {
+                              return option.label === el
+                          })
                           if (option) {
                               element_value_change(option.id, name)
                           }
@@ -267,6 +272,8 @@ export function Form({
                 )
             case ElementType.TEXTAREA:
             case ElementType.FILE:
+            case ElementType.SMART_SELECT:
+            case ElementType.SELECT:
                 return (
                     <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
                         <label className={"form-label"}>{element.label}</label>

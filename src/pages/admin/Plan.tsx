@@ -5,7 +5,7 @@ import Table from "../../components/UI/Table.tsx";
 import Modal from "../../components/UI/Modal.tsx";
 import ModalButton from "../../components/UI/ModalButton.tsx";
 import {Form} from "../../components/UI/Form.tsx";
-import {ElementType, SelectNodes} from "../../components/UI/types.ts";
+import {ComboboxOptionsType, ElementType, SelectNodes} from "../../components/UI/types.ts";
 import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
 
 export default function Plan() {
@@ -88,9 +88,9 @@ export default function Plan() {
                     {
                         label: "Предмет",
                         name: "subject_id",
-                        type: ElementType.SMART_SELECT,
+                        type: ElementType.COMBOBOX,
                         settings: {
-                            options: subjects.map((el) => ({value: el.id, text: el.name} as SelectNodes)),
+                            options: subjects.map((el) => ({id: el.id, label: el.name} as ComboboxOptionsType)),
                         }
                     },
                     {
