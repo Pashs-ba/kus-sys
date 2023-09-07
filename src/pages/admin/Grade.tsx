@@ -31,13 +31,13 @@ export default function Grade() {
         })
     }
 
-    function GetStudentsOptions(): ComboboxOptionsType[] {
+    function GetStudentsOptions(): SelectNodes[] {
         let students = users.filter((el) => el.role.includes("student"))
         return students.map((el) => {
             return {
-                id: el.id,
-                label: `${el.surname} ${el.name[0]}.`
-            } as ComboboxOptionsType
+                value: el.id,
+                text: `${el.surname} ${el.name[0]}.`
+            } as SelectNodes
         })
     }
 
@@ -114,7 +114,7 @@ export default function Grade() {
                     {
                         name: "student",
                         label: "Ученики",
-                        type: ElementType.COMBOBOX,
+                        type: ElementType.SMART_SELECT,
                         settings: {
                             options: GetStudentsOptions(),
                             multiple: true,
