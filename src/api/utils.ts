@@ -1,4 +1,4 @@
-import {AdminJournal, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
+import {AdminJournal, Contest, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 
@@ -230,5 +230,12 @@ export function PrintJournal(ids: number[]) {
     return new Promise<string>(async (resolve) => {
         const res = await axios.get(`${API_PATH}/print_journal/${ids.join(",")}`)
         resolve(`https://kusmirror.ru/${res.data}`)
+    })
+}
+
+export function GetAllContests(){
+    return new Promise<Contest[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/competition`)
+        resolve(res.data.competitions as Contest[])
     })
 }

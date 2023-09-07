@@ -13,9 +13,9 @@ export default function Table({
                               }: {
     elements: any[],
     table_fields: TableFieldType[],
-    onDelete: (ids: number[]) => void
+    onDelete?: (ids: number[]) => void
     additional_classes?: string,
-    onEdit: (element: any) => void
+    onEdit?: (element: any) => void
     NeedDelete?: boolean
     NeedEdit?: boolean,
     Sort?: (field_name: string, is_up: boolean) => void
