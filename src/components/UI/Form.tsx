@@ -265,6 +265,14 @@ export function Form({
                         <label className={"form-check-label"}>{element.label}</label>
                     </div>
                 )
+            case ElementType.TEXTAREA:
+            case ElementType.FILE:
+                return (
+                    <div className={`${horizontal ? "me-3" : "mb-3"}`} key={element.name}>
+                        <label className={"form-label"}>{element.label}</label>
+                        {rendered_element}
+                    </div>
+                )
             default:
                 return (
                     <div className={`${horizontal ? "me-4" : "mb-4"}`} key={element.name}>
@@ -287,7 +295,7 @@ export function Form({
                 data-bs-dismiss="modal"
                 //TODO Fix close when unvalidated
             >
-                {buttonText ? buttonText : "Submit"}
+                {buttonText ? buttonText : "Отправить"}
             </button>
         </form>
     )

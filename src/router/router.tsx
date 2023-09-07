@@ -27,6 +27,7 @@ export default function AppRoutes() {
     const Journal = lazy(() => import("../pages/admin/Journal.tsx"));
     const AdminRoot = lazy(() => import("../pages/admin/AdminRoot.tsx"));
     const SubjectAdminPage = lazy(() => import("../pages/admin/SubjectAdminPage.tsx"));
+    const FileLoader = lazy(() => import("../pages/admin/FileLoader.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>
@@ -48,6 +49,7 @@ export default function AppRoutes() {
                             <Route path={"admin/grade"} element={<Grade/>}/>
                             <Route path={"admin/journal"} element={<Journal/>}/>
                             <Route path={"admin/subject"} element={<SubjectAdminPage/>}/>
+                            <Route path={"admin/file_send"} element={<FileLoader/>}/>
                         </Route>
                     </Route>
                     <Route element={
