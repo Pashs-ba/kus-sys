@@ -29,6 +29,7 @@ export default function AppRoutes() {
     const SubjectAdminPage = lazy(() => import("../pages/admin/SubjectAdminPage.tsx"));
     const FileLoader = lazy(() => import("../pages/admin/FileLoader.tsx"));
     const ContestList = lazy(() => import("../pages/contests/ContestList.tsx"));
+    const Contest = lazy(() => import("../pages/contests/Contest.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>
@@ -38,7 +39,6 @@ export default function AppRoutes() {
                             <Tester navigate_in_fail={"/login"}
                                     test_function={isAuthenticated}/>
                         }>
-
                         <Route index element={<HomePage/>}/>
                         <Route element={
                             <Tester navigate_in_fail={"/"} test_function={isTeacher}/>
@@ -54,6 +54,7 @@ export default function AppRoutes() {
                             <Route path={"admin/file_send"} element={<FileLoader/>}/>
                         </Route>
                         <Route path={"contest"} element={<ContestList/>}/>
+                        <Route path={"contest/:contest_id"} element={<Contest/>}/>
                     </Route>
                     <Route element={
                         <Tester navigate_in_fail={"/"}

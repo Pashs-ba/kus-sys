@@ -72,3 +72,10 @@ export type Contest = {
     problems?: number[]
     tasks?: number[]
 }
+
+export type Question = {
+    id: number
+    name: string
+    nickname?: string
+
+}

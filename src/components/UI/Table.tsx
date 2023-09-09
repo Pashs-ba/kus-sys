@@ -101,6 +101,26 @@ export default function Table({
                                 </td>
                             )
                         }
+                        if (field.button) {
+                            return (
+                                <td key={field.name}>
+                                    <button
+                                        className={`btn ${field.button.type ? field.button.type : "btn-primary"} btn-sm`}
+                                        onClick={() => {
+                                            if (field.button) {
+                                                field.button.onClick(element[field.name])
+                                            }
+                                        }}
+                                    >
+                                        {
+                                            field.button.icon ?
+                                                <i className={`bi ${field.button.icon}`}></i> : null
+                                        }
+                                        {field.button.text}
+                                    </button>
+                                </td>
+                            )
+                        }
                         return <td key={field.name}>{GetFieldValue(element, field)}</td>
                     })
                 }
@@ -143,6 +163,7 @@ export default function Table({
                         </button>
                     </th>) : null
                 }
+
             </tr>
             </thead>
             <tbody>

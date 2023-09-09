@@ -239,3 +239,9 @@ export function GetAllContests(){
         resolve(res.data.competitions as Contest[])
     })
 }
+
+export function GetContestsWithQuestions(){
+    return new Promise<Contest>(async (resolve) => {
+
+    })
+}

@@ -99,10 +99,16 @@ export type TableFieldType = {
     width?: number
     sortDown?: boolean
     show_arrow?: boolean
-    checkbox?: CheckboxFieldType
+    checkbox?: CheckboxFieldType,
+    button?: ButtonFieldType
 }
 
-
+export type ButtonFieldType = {
+    onClick: (el: any) => void
+    text?: string
+    icon?: string
+    type?: string
+}
 
 export type ScheduleFieldType = BaseElement & {
     value?: string,
