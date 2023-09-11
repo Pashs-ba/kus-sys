@@ -256,8 +256,9 @@ export function GetContestWithQuestions(id: number){
 
 export function GetFullQuestion(id: number){
     return new Promise<Question>(async (resolve) => {
-        const raw_question = await axios.get(`${API_PATH}/get/if/question/id=${id}`)
-        const question = raw_question.data.questions[0] as Question
+        const user = GetLocalUser()
+        const raw_question = await axios.get(`${API_PATH}/get_question/${id}/${user.id}`)
+        const question = raw_question.data.question as Question
         resolve(question)
     })
 }

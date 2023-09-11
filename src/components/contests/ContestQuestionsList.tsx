@@ -3,9 +3,10 @@ import {useDispatch} from "react-redux";
 import {addMessage} from "../messages/messageSlice.ts";
 import {useNavigate} from "react-router";
 
-export function ContestQuestionsList({contest, setCurrentQuestion}: {
+export function ContestQuestionsList({contest, setCurrentQuestion, currentQuestion}: {
     contest: Contest,
-    setCurrentQuestion: (el: number) => void
+    setCurrentQuestion: (el: number) => void,
+    currentQuestion: number
 }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -18,8 +19,8 @@ export function ContestQuestionsList({contest, setCurrentQuestion}: {
                 <ul className="list-group">
                     {
                         contest.questions?.map((el, id) => {
-                            return <li className={"list-group-item"} key={id}>
-                                <a className={"text-decoration-none text-dark"}
+                            return <li className={`list-group-item ${el.id == currentQuestion ? "active" : ""}`} key={id}>
+                                <a className={`text-decoration-none ${el.id == currentQuestion ? "text-white" : "text-dark"}`}
                                    href={"#"}
                                    onClick={() => {
                                     setCurrentQuestion(el.id)
