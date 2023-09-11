@@ -29,7 +29,7 @@ export default function AppRoutes() {
     const SubjectAdminPage = lazy(() => import("../pages/admin/SubjectAdminPage.tsx"));
     const FileLoader = lazy(() => import("../pages/admin/FileLoader.tsx"));
     const ContestList = lazy(() => import("../pages/contests/ContestList.tsx"));
-    const Contest = lazy(() => import("../pages/contests/Contest.tsx"));
+    const Contest = lazy(() => import("../pages/contests/ContestPage.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>

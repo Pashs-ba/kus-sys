@@ -70,7 +70,7 @@ export type Contest = {
     start_time: string
     end_time: string
     problems?: number[]
-    tasks?: number[]
+    questions?: Question[]
 }
 
 export type Question = {

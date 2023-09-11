@@ -1,4 +1,4 @@
-import {AdminJournal, Contest, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
+import {AdminJournal, Contest, Grade, Journal, Lesson, Mark, Plan, Question, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 import {GetLocalUser} from "../utils/utils.ts";
@@ -244,7 +244,20 @@ export function GetAllContests(){
 
 export function GetContestWithQuestions(id: number){
     return new Promise<Contest>(async (resolve) => {
-        const competition = await axios.get(`${API_PATH}/get/if/competition/id=${id}`)
-        const raw_questions = await axios.get(`${API_PATH}/get/if/competition_question/competition_id=${id}`)
+        const raw_competition = await axios.get(`${API_PATH}/get/if/competition/id=${id}`)
+        const raw_questions = await axios.get(`${API_PATH}/get/if/competition_question[question_id[id,name]]/competition_id=${id}`)
+        const contest = raw_competition.data.competitions[0] as Contest
+        contest.questions = raw_questions.data.competition_questions.map((el)=>{
+            return el.question as Question
+        })
+        resolve(contest)
+    })
+}
+
+export function GetFullQuestion(id: number){
+    return new Promise<Question>(async (resolve) => {
+        const raw_question = await axios.get(`${API_PATH}/get/if/question/id=${id}`)
+        const question = raw_question.data.questions[0] as Question
+        resolve(question)
     })
 }

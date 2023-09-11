@@ -4,15 +4,16 @@ import {GetAllContests} from "../../api/utils.ts";
 import {Contest} from "../../types/types.ts";
 
 import Latex from "react-latex";
+import {useNavigate} from "react-router";
 
 export default function ContestList() {
+    const navigate = useNavigate();
     const [contests, setContests] = useState([] as Contest[]);
     useEffect(() => {
         GetAllContests().then((res) => {
             setContests(res);
         })
     }, []);
-    const [latexInput, setLatexInput] = useState("")
     return (
         <>
             <Table
@@ -37,7 +38,7 @@ export default function ContestList() {
                         label: "Участвовать",
                         button: {
                             onClick: (el: any) => {
-                                console.log(el)
+                                navigate(`/contest/${el}`)
                             },
                             text: "Участвовать"
                         }
