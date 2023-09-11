@@ -83,7 +83,6 @@ export default function JournalPage() {
 
     return (
         <>
-            <MessageBlock/>
             <Modal connected_with={"select_journal_modal"} title={"Выбор журнала"}>
                 <JournalSelect GetJournal={GetJournal}/>
             </Modal>

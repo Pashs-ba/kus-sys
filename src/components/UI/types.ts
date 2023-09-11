@@ -7,6 +7,8 @@ type BaseElement = {
 }
 
 export type BaseInputType = {
+    simple?: boolean
+    additionalClasses?: string
     label?: string
     type?: string
     value?: any

@@ -10,7 +10,6 @@ export default function FileLoader() {
             <div className={"row justify-content-center align-items-center full-height"}>
                 <div className="col-lg-4">
                     <Card>
-                        <MessageBlock/>
                         <Form
                             elements={[
                                 {

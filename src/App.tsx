@@ -5,6 +5,9 @@ import {GetLocalUser} from "./utils/utils.ts";
 import {useEffect, useState} from "react";
 import {SideBarElementType} from "./types/types.ts";
 import {ConfigInterceptors} from "./api/config.ts";
+import {useDispatch} from "react-redux";
+import {addMessage} from "./components/messages/messageSlice.ts";
+import MessageBlock from "./components/messages/MessageBlock.tsx";
 
 function App() {
     const [SideBarElements, setSideBarElements] = useState([{
@@ -12,8 +15,15 @@ function App() {
         icon: "bi-house",
         href: "/"
     }] as SideBarElementType[])
+    const dispatch = useDispatch()
+    function ErrorMessage(message: string) {
+        dispatch(addMessage({
+            type: "danger",
+            text: message
+        }))
+    }
     useEffect(() => {
-        ConfigInterceptors()
+        ConfigInterceptors(ErrorMessage)
         const user = GetLocalUser()
         const add = [] as SideBarElementType[]
         if (user) {
@@ -34,6 +44,7 @@ function App() {
                     <SideBar elements={SideBarElements}/>
                 </div>
                 <div className={"flex-grow-1 overflowable mx-5"}>
+                    <MessageBlock/>
                     <Outlet/>
                 </div>
             </div>

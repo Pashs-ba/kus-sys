@@ -26,6 +26,7 @@ export default function JournalBody({grade, lessons, onMarkChange}: {
                                     className={"m-0 p-0"}
                                 >
                                     <BaseInput
+                                        simple
                                         additionalClasses={"text-center invisible-input border-0"}
                                         onInput={(el) => {
                                             onMarkChange(student.id, lesson.id, el.currentTarget.value)

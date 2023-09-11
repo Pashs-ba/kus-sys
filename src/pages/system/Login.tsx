@@ -31,7 +31,6 @@ export default function Login() {
                 <div className="col-lg-4">
                     <Card>
                         <h3>Авторизация</h3>
-                        <MessageBlock/>
                         <Form
                             elements={[
                                 {

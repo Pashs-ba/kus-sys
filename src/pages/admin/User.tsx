@@ -82,7 +82,6 @@ export default function User() {
 
     return (
         <>
-            <MessageBlock/>
             <Modal connected_with={"user_modal"} title={"Юзер"}>
                 <Form
                     elements={[
