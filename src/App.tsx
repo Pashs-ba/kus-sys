@@ -4,6 +4,7 @@ import SideBar from "./components/common/SideBar.tsx";
 import {GetLocalUser} from "./utils/utils.ts";
 import {useEffect, useState} from "react";
 import {SideBarElementType} from "./types/types.ts";
+import {ConfigInterceptors} from "./api/config.ts";
 
 function App() {
     const [SideBarElements, setSideBarElements] = useState([{
@@ -12,6 +13,7 @@ function App() {
         href: "/"
     }] as SideBarElementType[])
     useEffect(() => {
+        ConfigInterceptors()
         const user = GetLocalUser()
         const add = [] as SideBarElementType[]
         if (user) {

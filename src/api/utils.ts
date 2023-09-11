@@ -1,6 +1,7 @@
 import {AdminJournal, Contest, Grade, Journal, Lesson, Mark, Plan, Subject, User} from "../types/types.ts";
 import axios from "axios";
 import {API_PATH} from "../config.ts";
+import {GetLocalUser} from "../utils/utils.ts";
 
 
 export function Auth({login, password}: { login: string, password: string }) {
@@ -235,13 +236,15 @@ export function PrintJournal(ids: number[]) {
 
 export function GetAllContests(){
     return new Promise<Contest[]>(async (resolve) => {
-        const res = await axios.get(`${API_PATH}/get/all/competition`)
-        resolve(res.data.competitions as Contest[])
+        const user = GetLocalUser()
+        const res = await axios.get(`${API_PATH}/get/if/competition_user[competition_id[]]/user_id=${user.id}`)
+        resolve(res.data.competition_users.map((el)=>{return el.competition}) as Contest[])
     })
 }
 
-export function GetContestsWithQuestions(){
+export function GetContestWithQuestions(id: number){
     return new Promise<Contest>(async (resolve) => {
-
+        const competition = await axios.get(`${API_PATH}/get/if/competition/id=${id}`)
+        const raw_questions = await axios.get(`${API_PATH}/get/if/competition_question/competition_id=${id}`)
     })
 }

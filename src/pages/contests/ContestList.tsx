@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {GetAllContests} from "../../api/utils.ts";
 import {Contest} from "../../types/types.ts";
 
+import Latex from "react-latex";
+
 export default function ContestList() {
     const [contests, setContests] = useState([] as Contest[]);
     useEffect(() => {
@@ -10,8 +12,9 @@ export default function ContestList() {
             setContests(res);
         })
     }, []);
+    const [latexInput, setLatexInput] = useState("")
     return (
-        <div className={"container"}>
+        <>
             <Table
                 elements={contests}
                 table_fields={[
@@ -38,10 +41,10 @@ export default function ContestList() {
                             },
                             text: "Участвовать"
                         }
-
                     }
                 ]}
             />
-        </div>
+
+        </>
     )
 }
