@@ -33,6 +33,9 @@ function App() {
             if (user.role.some(role => role.includes("add"))) {
                 add.push({text: "Управление", icon: "bi-gear", href: "/admin"})
             }
+            if (user.role.includes("submitor")) {
+                add.push({text: "Соревнования", icon: "bi-trophy", href: "/contest"})
+            }
         }
         setSideBarElements([...SideBarElements, ...add])
     }, [])

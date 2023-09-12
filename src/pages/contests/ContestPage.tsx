@@ -25,7 +25,6 @@ export default function ContestPage() {
         if (contest.questions?.find((el) => el.id == currentQuestion).legend && !force) return
         GetFullQuestion(currentQuestion).then((res) => {
             const index = contest.questions?.findIndex((el) => el.id == currentQuestion)
-            console.log(res)
             setContest({
                 ...contest,
                 questions: [

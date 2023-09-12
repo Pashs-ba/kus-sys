@@ -270,7 +270,7 @@ export function SendAnswer(question_id: number, answer: string) {
         await axios.post(`${API_PATH}/post/answer`, {
             question_id: question_id,
             user_id: user.id,
-            answer: answer
+            value: answer
         })
         resolve()
     })

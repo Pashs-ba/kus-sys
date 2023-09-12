@@ -15,6 +15,13 @@ export default function HomePage() {
                         </>
                     ) : null
                 }
+                {
+                    user.role.includes("submitor") ? (
+                        <>
+                            <HomePageLinkCard header={"Список соревнований"} to={"/contest"}/>
+                        </>
+                    ): null
+                }
             </div>
 
         </div>
