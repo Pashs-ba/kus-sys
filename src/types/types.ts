@@ -79,4 +79,5 @@ export type Question = {
     nickname?: string
     legend?: string
     type?: number
+    answer?: string
 }
