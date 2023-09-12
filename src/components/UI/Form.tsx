@@ -294,7 +294,7 @@ export function Form({
         <form className={`${horizontal ? "d-flex" : ""} ${additionalClasses}`}>
             {form_elements}
             <button
-                className={`btn btn-primary ${additionalClassesButton} ${horizontal ? "my-2" : ""}`}
+                className={`btn  ${additionalClassesButton?additionalClassesButton:"btn-primary"} ${horizontal ? "my-2" : ""}`}
                 onClick={(el) => {
                     el.preventDefault()
                     onSubmit(form_values)

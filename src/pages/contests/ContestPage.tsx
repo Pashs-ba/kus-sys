@@ -5,6 +5,7 @@ import {GetContestWithQuestions, GetFullQuestion, SendAnswer} from "../../api/ut
 import {ContestQuestionsList} from "../../components/contests/ContestQuestionsList.tsx";
 import {Form} from "../../components/UI/Form.tsx";
 import {ElementType} from "../../components/UI/types.ts";
+import QuestionPage from "../../components/contests/QuestionPage.tsx";
 
 export default function ContestPage() {
     const params = useParams()
@@ -50,43 +51,9 @@ export default function ContestPage() {
                 />
             </div>
             <div className={"col-10 h-100 overflow-auto"}>
-                {
-                    currentQuestion == -1 ? (
-                        <div className={"h-100 d-flex justify-content-center align-items-center"}>
-                            <i className={"bi bi-arrow-left fs-1 me-2"}/>
-                            <h3 className={"m-0"}>Выберете задание из списка слева</h3>
-                        </div>
-                    ) : (
-                        <div className={"d-flex flex-column h-100"}>
-                            <h3 className={"p-3 fw-bold border-bottom"}>{GetQuestion().name}</h3>
-                            <div className={"p-3 flex-grow-1 border-bottom"}
-                                 dangerouslySetInnerHTML={{__html: GetQuestion().legend}}></div>
-                            <div className={"my-4"}>
-                                <div className="col-4">
-                                    <Form elements={
-                                        [
-                                            {
-                                                label: "Ответ",
-                                                type: ElementType.INPUT,
-                                                name: "answer",
-                                                settings: {}
-                                            }
-                                        ]
-                                    } onSubmit={(el) => {
-                                        SendAnswer(currentQuestion, el.answer).then(() => {
-                                            UpdateQuestion(true)
-                                        })
-
-                                    }}
-                                    instance={{
-                                        answer:GetQuestion().answer?GetQuestion().answer:null
-                                    }}/>
-                                </div>
-
-                            </div>
-                        </div>
-                    )
-                }
+                <QuestionPage currentQuestion={currentQuestion}
+                              GetQuestion={GetQuestion}
+                              UpdateQuestion={UpdateQuestion}/>
             </div>
         </div>
     )
