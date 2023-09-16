@@ -28,11 +28,11 @@ export default function MessageBlock() {
                         {messages[i].text}
                     </div>
                     <div>
-                        {messages[i].constant ? <button type="button"
-                                                        className="btn-close"
-                                                        onClick={() => {
-                                                            dispatch(deleteMessage(messages[i]))
-                                                        }}/> : null}
+                        <button type="button"
+                                className="btn-close"
+                                onClick={() => {
+                                    dispatch(deleteMessage(messages[i]))
+                                }}/>
                     </div>
 
                 </div>

@@ -35,6 +35,20 @@ export default function Registration() {
                                 settings: {
                                     type: "password"
                                 }
+                            },
+                            {
+                                label: "Почта",
+                                name: "email",
+                                type: ElementType.INPUT,
+                                settings: {
+                                    type: "email"
+                                }
+                            },
+                            {
+                                label: "Дополнительный код (необязательно)",
+                                name: "code",
+                                type: ElementType.INPUT,
+                                settings: {}
                             }
                         ]}
                               onSubmit={(el)=>{
