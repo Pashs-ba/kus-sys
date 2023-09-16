@@ -54,6 +54,7 @@ export type BaseFileType = BaseElement & {
     multiple?: boolean
     onInput?: (el: any) => void
     url?: string
+    accept?: string
 }
 
 export type SmartSelectType = BaseSelectType & {
@@ -126,4 +127,10 @@ export type ComboboxFieldType = {
 export type ComboboxOptionsType = {
     label: string
     id: string
+}
+
+export type ServerForm = {
+    userName: string,
+    techName: string,
+    fields: FormElementType[]
 }

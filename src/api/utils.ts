@@ -2,6 +2,7 @@ import {AdminJournal, Contest, Grade, Journal, Lesson, Mark, Plan, Question, Sub
 import axios from "axios";
 import {API_PATH} from "../config.ts";
 import {GetLocalUser} from "../utils/utils.ts";
+import {ElementType, FormElementType, FormType, ServerForm} from "../components/UI/types.ts";
 
 
 export function Auth({login, password}: { login: string, password: string }) {
@@ -234,27 +235,29 @@ export function PrintJournal(ids: number[]) {
     })
 }
 
-export function GetAllContests(){
+export function GetAllContests() {
     return new Promise<Contest[]>(async (resolve) => {
         const user = GetLocalUser()
         const res = await axios.get(`${API_PATH}/get/if/competition_user[competition_id[]]/user_id=${user.id}`)
-        resolve(res.data.competition_users.map((el)=>{return el.competition}) as Contest[])
+        resolve(res.data.competition_users.map((el) => {
+            return el.competition
+        }) as Contest[])
     })
 }
 
-export function GetContestWithQuestions(id: number){
+export function GetContestWithQuestions(id: number) {
     return new Promise<Contest>(async (resolve) => {
         const raw_competition = await axios.get(`${API_PATH}/get/if/competition/id=${id}`)
         const raw_questions = await axios.get(`${API_PATH}/get/if/competition_question[question_id[id,name]]/competition_id=${id}`)
         const contest = raw_competition.data.competitions[0] as Contest
-        contest.questions = raw_questions.data.competition_questions.map((el)=>{
+        contest.questions = raw_questions.data.competition_questions.map((el) => {
             return el.question as Question
         })
         resolve(contest)
     })
 }
 
-export function GetFullQuestion(id: number){
+export function GetFullQuestion(id: number) {
     return new Promise<Question>(async (resolve) => {
         const user = GetLocalUser()
         const raw_question = await axios.get(`${API_PATH}/get_question/${id}/${user.id}`)
@@ -273,5 +276,52 @@ export function SendAnswer(question_id: number, answer: string) {
             value: answer
         })
         resolve()
+    })
+}
+
+export function GetFormTypeFromString(type: string): ElementType {
+    switch (type) {
+        case "FILE":
+            return ElementType.FILE
+        case "TEXTAREA":
+            return ElementType.TEXTAREA
+        default:
+            throw new Error(`Unknown form type: ${type}`)
+    }
+}
+
+export function GetForms() {
+    return new Promise<ServerForm[]>(async (resolve) => {
+        const res = await axios.get(`${API_PATH}/get/all/form[id,(field_form[field_id[]]),*]`)
+        const pre_forms = res.data.forms as any[]
+        resolve(pre_forms.map((el) => {
+            const form: ServerForm = {
+                id: el.id,
+                userName: el.userName,
+                techName: el.techName,
+                fields:
+                    el.field_forms.map((field) => {
+                        return {
+                            label: field.field.name,
+                            name: field.field.label,
+                            type: GetFormTypeFromString(field.field.type),
+                            settings: {
+                                accept: GetFormTypeFromString(field.field.type) == ElementType.FILE ? field.field.info : null
+                            }
+                        } as FormElementType
+                    })
+            }
+            return form
+        }))
+    })
+//     /api/multitool
+}
+
+export function SendForms(techName: string, data: any) {
+    return new Promise<void>(async (resolve) => {
+        await axios.post(`${API_PATH}/multitool`, {
+            techName: techName,
+            ...data
+        }, {headers: {'Content-Type': 'multipart/form-data'}})
     })
 }

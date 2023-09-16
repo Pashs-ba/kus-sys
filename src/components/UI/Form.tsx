@@ -163,6 +163,7 @@ export function Form({
                 disabled={settings.disabled}
                 additionalClasses={settings.additionalClasses}
                 multiple={settings.multiple}
+                accept={settings.accept}
                 onInput={(el) => {
                     if (settings.multiple) {
                         element_value_change(el.target.files, name)

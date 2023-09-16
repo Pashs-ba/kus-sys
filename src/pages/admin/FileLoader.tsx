@@ -1,46 +1,60 @@
 import Card from "../../components/UI/Card.tsx";
 import MessageBlock from "../../components/messages/MessageBlock.tsx";
 import {Form} from "../../components/UI/Form.tsx";
-import {ComboboxOptionsType, ElementType} from "../../components/UI/types.ts";
+import {ComboboxOptionsType, ElementType, ServerForm} from "../../components/UI/types.ts";
+import {useEffect, useState} from "react";
+import {GetForms, SendForms} from "../../api/utils.ts";
+import ComboBox from "../../components/UI/ComboBox.tsx";
 
 export default function FileLoader() {
+    const [serverForms, setServerForms] = useState<ServerForm[]>([])
+    const [currentIndex, setCurrentIndex] = useState(0)
+    useEffect(() => {
+
+        GetForms().then((el) => {
+            setServerForms(el)
+        })
+    }, []);
     return (
         <div className={"container"}>
 
             <div className={"row justify-content-center align-items-center full-height"}>
                 <div className="col-lg-4">
                     <Card>
-                        <Form
-                            elements={[
-                                {
-                                    name: "send_option",
-                                    label: "Тип отправки",
-                                    type: ElementType.COMBOBOX,
-                                    settings: {
-                                        options : [
-                                            {
-                                                id: "Тест",
-                                                label: "Тест",
+
+                        {
+                            serverForms.length > 0 ? (
+                                <>
+                                    <div className={"mb-3"}>
+                                        <ComboBox
+                                            label={"Выберите форму"}
+                                            real_options={
+                                                serverForms.map((el) => {
+                                                    return el.userName
+                                                })
                                             }
-                                        ] as ComboboxOptionsType[],
-                                    }
-                                },
-                                {
-                                    name: "file",
-                                    label: "Файл",
-                                    type: ElementType.FILE,
-                                    settings: {}
-                                },
-                                {
-                                    name: "additional_text",
-                                    label: "Дополнительные данные",
-                                    type: ElementType.TEXTAREA,
-                                    settings: {}
-                                }
-                            ]}
-                         onSubmit={(el)=>{
-                             console.log(el)
-                         }}/>
+                                            value={serverForms[0].userName}
+                                            onInput={(el) => {
+                                                if (el) {
+                                                    setCurrentIndex(serverForms.findIndex((form) => {
+                                                        return form.userName === el
+                                                    }))
+                                                }
+
+                                            }}
+                                        />
+                                    </div>
+                                    <Form elements={
+                                        serverForms[currentIndex].fields
+                                    } onSubmit={
+                                        (el)=>{
+                                            SendForms(serverForms[currentIndex].techName, el)
+                                        }
+
+                                    }/>
+                                </>
+                            ) : null
+                        }
                     </Card>
                 </div>
             </div>

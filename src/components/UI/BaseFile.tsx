@@ -7,7 +7,8 @@ export default function BaseFile({
                                      additionalClasses,
                                      multiple,
                                      onInput,
-                                     url
+                                     url,
+                                     accept
                                  }: BaseFileType) {
     return (
         <>
@@ -17,6 +18,8 @@ export default function BaseFile({
                    type={"file"}
                    multiple={multiple}
                    onChange={onInput}
+                   accept={accept}
+
             />
             {url ?
                 <div className={"form-text"}>
