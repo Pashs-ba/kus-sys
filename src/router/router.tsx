@@ -30,6 +30,7 @@ export default function AppRoutes() {
     const FileLoader = lazy(() => import("../pages/admin/FileLoader.tsx"));
     const ContestList = lazy(() => import("../pages/contests/ContestList.tsx"));
     const Contest = lazy(() => import("../pages/contests/ContestPage.tsx"));
+    const Registration = lazy(() => import("../pages/system/Registration.tsx"));
     return (
         <Suspense fallback={<LoadingPage/>}>
             <Routes>
@@ -62,6 +63,7 @@ export default function AppRoutes() {
                                     return !isAuthenticated()
                                 }}/>
                     }>
+                        <Route path={"registration"} element={<Registration/>}/>
                         <Route path={"login"} element={<Login/>}/>
                     </Route>
                     <Route path={"*"} element={<NotFound/>}/>

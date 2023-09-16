@@ -5,6 +5,7 @@ import MessageBlock from "../../components/messages/MessageBlock.tsx";
 import {useDispatch} from "react-redux";
 import {addMessage, addMessageWithRedirection} from "../../components/messages/messageSlice.ts";
 import {Auth} from "../../api/utils.ts";
+import {Link} from "react-router-dom";
 
 export default function Login() {
     const dispatch = useDispatch()
@@ -43,7 +44,9 @@ export default function Login() {
                                     label: "Пароль",
                                     name: "password",
                                     type: ElementType.INPUT,
-                                    settings: {}
+                                    settings: {
+                                        type: "password"
+                                    }
                                 }
                             ]}
                             onSubmit={(el) => {
@@ -52,6 +55,7 @@ export default function Login() {
                             buttonText={"Войти"}/>
                         {/*TODO Translation?*/}
                         {/*TODO Loading*/}
+                        <p className={"text-secondary m-0 mt-3"}>Ещё нет аккаунта? <Link to={"/registration"}>Зарегистрироваться</Link></p>
                     </Card>
                 </div>
             </div>
