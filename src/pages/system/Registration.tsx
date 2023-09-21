@@ -4,8 +4,36 @@ import {ElementType} from "../../components/UI/types.ts";
 import {useDispatch} from "react-redux";
 import {addMessage} from "../../components/messages/messageSlice.ts";
 import {Link} from "react-router-dom";
+import {RegistrationSend} from "../../api/utils.ts";
+import {useNavigate} from "react-router";
 
 export default function Registration() {
+    const navigate = useNavigate()
+    function SendRegistration(el: any){
+        if (el.password !== el.password2) {
+            dispatch(addMessage({
+                type: "danger",
+                text: "Пароли не совпадают"
+            }))
+            return;
+        }
+        RegistrationSend(el).then(()=>{
+            dispatch(addMessage(
+                {
+                    type: "success",
+                    text: "Регистрация прошла успешно. Проверьте почту"
+                }
+            ))
+            navigate("/login")
+        }).catch((err)=>{
+            dispatch(addMessage(
+                {
+                    type: "danger",
+                    text: "Что то пошло не так"
+                }
+            ))
+        })
+    }
     const dispatch = useDispatch()
     return (
         <div className={"full-height container"}>
@@ -46,19 +74,12 @@ export default function Registration() {
                             },
                             {
                                 label: "Дополнительный код (необязательно)",
-                                name: "code",
+                                name: "key",
                                 type: ElementType.INPUT,
                                 settings: {}
                             }
                         ]}
-                              onSubmit={(el)=>{
-                                  if (el.password !== el.password2) {
-                                      dispatch(addMessage({
-                                          type: "danger",
-                                          text: "Пароли не совпадают"
-                                      }))
-                                  }
-                              }}
+                              onSubmit={SendRegistration}
                               buttonText={"Зарегистрироваться"}/>
                         <p className={"text-secondary m-0 mt-3"}>Уже есть аккаунт? <Link to={"/login"}>Войти</Link></p>
                     </Card>

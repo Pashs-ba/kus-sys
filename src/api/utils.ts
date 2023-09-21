@@ -325,3 +325,15 @@ export function SendForms(techName: string, data: any) {
         }, {headers: {'Content-Type': 'multipart/form-data'}})
     })
 }
+
+export function RegistrationSend(data: any) {
+    return new Promise<void>(async (resolve, reject) => {
+        try{
+            await axios.post(`${API_PATH}/registration`, data)
+            resolve()
+        }catch(err){
+            reject(err)
+        }
+
+    })
+}
