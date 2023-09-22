@@ -10,6 +10,7 @@ export default function AdminRoot() {
                 <HomePageLinkCard header={"Редактирование журналов"} to={"/admin/journal"}/>
                 <HomePageLinkCard header={"Редактирование планов"} to={"/admin/plan"}/>
                 <HomePageLinkCard header={"Редактирование предметов"} to={'/admin/subject'}/>
+                <HomePageLinkCard header={"Прочие функции"} to={'/admin/other'}/>
             </div>
 
         </div>

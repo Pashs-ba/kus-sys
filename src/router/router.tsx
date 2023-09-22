@@ -15,6 +15,11 @@ function isTeacher(): boolean {
     return user.role.includes("teacher")
 }
 
+function isAdmin(): boolean {
+    const user: User = JSON.parse(localStorage.getItem("user") as string);
+    return user.role.some(role => role.includes("add"))
+}
+
 export default function AppRoutes() {
     const App = lazy(() => import("../App.tsx"));
     const HomePage = lazy(() => import("../pages/HomePage.tsx"));
@@ -46,13 +51,18 @@ export default function AppRoutes() {
                         }>
                             <Route path={"journal"} element={<SelectJournalPage/>}/>
                             <Route path={"journal/:journal_id"} element={<JournalPage/>}/>
+
+                        </Route>
+                        <Route element={
+                            <Tester navigate_in_fail={"/"} test_function={isAdmin}/>
+                        }>
                             <Route path={"admin"} element={<AdminRoot/>}/>
                             <Route path={"admin/user"} element={<User/>}/>
                             <Route path={"admin/plan"} element={<Plan/>}/>
                             <Route path={"admin/grade"} element={<Grade/>}/>
                             <Route path={"admin/journal"} element={<Journal/>}/>
                             <Route path={"admin/subject"} element={<SubjectAdminPage/>}/>
-                            <Route path={"admin/file_send"} element={<FileLoader/>}/>
+                            <Route path={"admin/other"} element={<FileLoader/>}/>
                         </Route>
                         <Route path={"contest"} element={<ContestList/>}/>
                         <Route path={"contest/:contest_id"} element={<Contest/>}/>
