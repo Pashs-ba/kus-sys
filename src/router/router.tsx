@@ -62,10 +62,10 @@ export default function AppRoutes() {
                             <Route path={"admin/grade"} element={<Grade/>}/>
                             <Route path={"admin/journal"} element={<Journal/>}/>
                             <Route path={"admin/subject"} element={<SubjectAdminPage/>}/>
-                            <Route path={"admin/other"} element={<FileLoader/>}/>
                         </Route>
                         <Route path={"contest"} element={<ContestList/>}/>
                         <Route path={"contest/:contest_id"} element={<Contest/>}/>
+                        <Route path={"other"} element={<FileLoader/>}/>
                     </Route>
                     <Route element={
                         <Tester navigate_in_fail={"/"}

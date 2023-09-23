@@ -36,6 +36,7 @@ function App() {
             if (user.role.includes("submitor")) {
                 add.push({text: "Соревнования", icon: "bi-trophy", href: "/contest"})
             }
+            add.push({text: "Прочие функции", icon: "bi-card-list", href: "/other"})
         }
         setSideBarElements([...SideBarElements, ...add])
     }, [])
