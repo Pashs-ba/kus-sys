@@ -43,14 +43,14 @@ export default function ContestPage() {
 
     return (
         <div className={"row h-100"} style={{maxWidth: "100%"}}>
-            <div className="col-2 border-end h-100 text-center">
+            <div className="col-lg-2 col-md-3 border-end h-100 text-center">
                 <ContestQuestionsList
                     contest={contest}
                     currentQuestion={currentQuestion}
                     setCurrentQuestion={setCurrentQuestion}
                 />
             </div>
-            <div className={"col-10 h-100 overflow-auto"}>
+            <div className={"col-lg-10 col-md-9 h-100 overflow-auto"}>
                 <QuestionPage currentQuestion={currentQuestion}
                               GetQuestion={GetQuestion}
                               UpdateQuestion={UpdateQuestion}/>
