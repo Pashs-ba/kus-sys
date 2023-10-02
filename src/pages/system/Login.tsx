@@ -56,6 +56,7 @@ export default function Login() {
                         {/*TODO Translation?*/}
                         {/*TODO Loading*/}
                         <p className={"text-secondary m-0 mt-3"}>Ещё нет аккаунта? <Link to={"/registration"}>Зарегистрироваться</Link></p>
+                        <p className={"text-secondary m-0 mt-3"}>Забыли пароль? <Link to={"/password_restoring"}>Востановить</Link></p>
                     </Card>
                 </div>
             </div>

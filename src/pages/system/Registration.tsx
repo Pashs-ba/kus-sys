@@ -65,7 +65,7 @@ export default function Registration() {
                                 }
                             },
                             {
-                                label: "Почта",
+                                label: "Электропочта",
                                 name: "email",
                                 type: ElementType.INPUT,
                                 settings: {
