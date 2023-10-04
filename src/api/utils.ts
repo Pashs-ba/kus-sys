@@ -318,11 +318,16 @@ export function GetForms() {
 }
 
 export function SendForms(techName: string, data: any) {
-    return new Promise<void>(async (resolve) => {
-        await axios.post(`${API_PATH}/multitool`, {
+    console.log({
+        techName,
+        ...data
+    })
+    return new Promise<string>(async (resolve) => {
+        const response = await axios.post(`${API_PATH}/multitool`, {
             techName: techName,
             ...data
         }, {headers: {'Content-Type': 'multipart/form-data'}})
+        resolve(response.data.html)
     })
 }
 
