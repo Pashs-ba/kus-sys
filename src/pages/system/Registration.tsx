@@ -6,6 +6,7 @@ import {addMessage} from "../../components/messages/messageSlice.ts";
 import {Link} from "react-router-dom";
 import {RegistrationSend} from "../../api/utils.ts";
 import {useNavigate} from "react-router";
+import {AxiosError} from "axios";
 
 export default function Registration() {
     const navigate = useNavigate()
@@ -25,11 +26,12 @@ export default function Registration() {
                 }
             ))
             navigate("/login")
-        }).catch((err)=>{
+        }).catch((err: AxiosError)=>{
+            console.log(err)
             dispatch(addMessage(
                 {
                     type: "danger",
-                    text: "Что то пошло не так"
+                    text: err.response.status === 409?err.response.data:"Произошла ошибка"
                 }
             ))
         })
