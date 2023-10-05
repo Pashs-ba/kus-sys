@@ -284,6 +284,7 @@ export function GetFormTypeFromString(type: string): ElementType {
         case "FILE":
             return ElementType.FILE
         case "TEXTAREA":
+        case "BIG_TEXTAREA":
             return ElementType.TEXTAREA
         case "INPUT":
             return ElementType.INPUT
@@ -308,7 +309,8 @@ export function GetForms() {
                             name: field.field.label,
                             type: GetFormTypeFromString(field.field.type),
                             settings: {
-                                accept: GetFormTypeFromString(field.field.type) == ElementType.FILE ? field.field.info : null
+                                accept: GetFormTypeFromString(field.field.type) == ElementType.FILE ? field.field.info : null,
+                                rows: field.field.type == "BIG_TEXTAREA" ? 10 : null
                             }
                         } as FormElementType
                     })
@@ -320,10 +322,6 @@ export function GetForms() {
 }
 
 export function SendForms(techName: string, data: any) {
-    console.log({
-        techName,
-        ...data
-    })
     return new Promise<string>(async (resolve) => {
         const response = await axios.post(`${API_PATH}/multitool`, {
             techName: techName,
