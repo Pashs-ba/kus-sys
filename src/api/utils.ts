@@ -285,6 +285,8 @@ export function GetFormTypeFromString(type: string): ElementType {
             return ElementType.FILE
         case "TEXTAREA":
             return ElementType.TEXTAREA
+        case "INPUT":
+            return ElementType.INPUT
         default:
             throw new Error(`Unknown form type: ${type}`)
     }
@@ -333,10 +335,10 @@ export function SendForms(techName: string, data: any) {
 
 export function RegistrationSend(data: any) {
     return new Promise<void>(async (resolve, reject) => {
-        try{
+        try {
             await axios.post(`${API_PATH}/registration`, data)
             resolve()
-        }catch(err){
+        } catch (err) {
             reject(err)
         }
 
