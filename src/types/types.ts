@@ -5,6 +5,7 @@ export type User = {
     surname: string,
     login: string,
     id: number
+    token: string
 }
 
 export type Journal = {

@@ -8,6 +8,7 @@ import {ElementType, FormElementType, FormType, ServerForm} from "../components/
 export function Auth({login, password}: { login: string, password: string }) {
     return new Promise<User>(async (resolve, reject) => {
         try {
+            // console.log(login, password)
             const res = await axios.post(`${API_PATH}/login`, {login, password})
             resolve(res.data.user as User)
         } catch (err) {

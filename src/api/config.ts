@@ -1,4 +1,5 @@
 import axios from "axios";
+import {GetLocalUser} from "../utils/utils.ts";
 
 function ErrorToText(error_code: string) {
     switch (error_code) {
@@ -23,4 +24,10 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
 
         return Promise.reject(error);
     });
+    axios.interceptors.request.use(function (config) {
+        const user = GetLocalUser()
+        config.headers["token"] = user?user.token:""
+        // console.log(config)
+        return config
+    })
 }
