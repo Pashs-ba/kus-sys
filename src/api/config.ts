@@ -1,5 +1,6 @@
 import axios from "axios";
 import {GetLocalUser} from "../utils/utils.ts";
+import {DEBUG} from "../config.ts";
 
 function ErrorToText(error_code: string) {
     switch (error_code) {
@@ -21,12 +22,22 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
         // else {
         //     error_message(ErrorToText(error.code))
         // }
+        if (error.response.status == 403){
+            localStorage.removeItem("user")
+            error_message("Пожалуйста перезайдите на сайт")
+            setTimeout(() => {
+                window.location.href = "/"
+            }, 2000)
 
+        }
         return Promise.reject(error);
     });
     axios.interceptors.request.use(function (config) {
         const user = GetLocalUser()
-        config.headers["token"] = user?user.token:""
+        if (!DEBUG){
+            config.headers["token"] = user?user.token:""
+        }
+
         // console.log(config)
         return config
     })
