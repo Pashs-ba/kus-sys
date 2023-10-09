@@ -271,6 +271,11 @@ export function SendAnswer(question_id: number, answer: string) {
     return new Promise<void>(async (resolve) => {
         if (answer === "") return
         const user = GetLocalUser()
+        console.log({
+            question_id: question_id,
+            user_id: user.id,
+            value: answer
+        })
         await axios.post(`${API_PATH}/post/answer`, {
             question_id: question_id,
             user_id: user.id,

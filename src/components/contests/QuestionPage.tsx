@@ -1,15 +1,73 @@
 import {Form} from "../UI/Form.tsx";
-import {ElementType} from "../UI/types.ts";
+import {ElementType, FormElementType} from "../UI/types.ts";
 import {SendAnswer} from "../../api/utils.ts";
 import {Question} from "../../types/types.ts";
 import Modal from "../UI/Modal.tsx";
 import {Modal as BootstrapModal} from "bootstrap/dist/js/bootstrap.bundle.min.js"
+import {useEffect, useState} from "react";
+
 export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuestion}: {
     currentQuestion: Number,
     GetQuestion: () => Question,
     UpdateQuestion: (force?: boolean) => void
 }) {
-
+    // const [elements, setElements] = useState([])
+    // useEffect(() => {
+    //     setTimeout(()=>{
+    //         console.log("been", GetQuestion())
+    //         if (GetQuestion() && GetQuestion().type == "singl") {
+    //             setElements([
+    //                 {
+    //                     label: "Ответ",
+    //                     type: ElementType.INPUT,
+    //                     name: "answer",
+    //                     settings: {}
+    //                 }
+    //             ])
+    //         }
+    //     }, 500)
+    //
+    // }, [currentQuestion]);
+    function SetQuestion() {
+        if (GetQuestion() && GetQuestion().type == "singl") {
+            return [
+                {
+                    label: "Ответ",
+                    type: ElementType.INPUT,
+                    name: "answer",
+                    settings: {}
+                }
+            ] as FormElementType[]
+        }
+        if (GetQuestion() && GetQuestion().type == "bool"){
+            return [
+                {
+                    label: "Ответ",
+                    type: ElementType.COMBOBOX,
+                    name: "answer",
+                    settings: {
+                        options:[
+                            {
+                                id: "true",
+                                label: "Да"
+                            },
+                            {
+                                id: "false",
+                                label: "Нет"
+                            }
+                        ]
+                    }
+                }
+            ] as FormElementType[]
+        }
+        return [] as FormElementType[]
+    }
+    const Bool2Ans = {
+        "true": "Да",
+        "false": "Нет",
+        "tru": "Да",
+        "fals": "Нет",
+    }
     return (
         <>
             {
@@ -21,7 +79,7 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                 ) : (
                     <>
                         <Modal title={"Ответ записан"} connected_with={"answer"}>
-                            Ответ "{GetQuestion().answer}" на вопрос "{GetQuestion().name}" записан!
+                            Ответ "{GetQuestion().type=="bool"?Bool2Ans[GetQuestion().answer]:GetQuestion().answer}" на вопрос "{GetQuestion().name}" записан!
                         </Modal>
                         <div className={"d-flex flex-column h-100"}>
                             <div className=" p-3 d-flex align-items-center border-bottom">
@@ -39,19 +97,10 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                                  dangerouslySetInnerHTML={{__html: GetQuestion().legend}}></div>
                             <div className={"my-4 row"}>
                                 <div className="col-4">
-                                    <Form elements={
-                                        [
-                                            {
-                                                label: "Ответ",
-                                                type: ElementType.INPUT,
-                                                name: "answer",
-                                                settings: {}
-                                            }
-                                        ]
-                                    } onSubmit={(el) => {
+                                    <Form elements={SetQuestion()} onSubmit={(el) => {
                                         SendAnswer(currentQuestion, el.answer).then(() => {
                                             UpdateQuestion(true)
-                                            if (el.answer){
+                                            if (el.answer) {
                                                 let modal = new BootstrapModal(document.getElementById("answer"), {})
                                                 modal.show()
                                             }
