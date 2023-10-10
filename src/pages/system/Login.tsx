@@ -31,6 +31,12 @@ export default function Login() {
             <div className="row h-100 justify-content-center align-items-center">
                 <div className="col-lg-4">
                     <Card>
+                        <div className={"alert alert-primary"}>
+                            Контакт для связи <a href={"https://t.me/rcomrad"}>@rcomrad</a>
+                        </div>
+                        <div className={"alert alert-primary"}>
+                            Зеркало системы <a href={"https://kusmirror.ru"}>kusmirror.ru</a>
+                        </div>
                         <h3>Авторизация</h3>
                         <Form
                             elements={[
