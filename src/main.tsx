@@ -8,7 +8,14 @@ import {Provider} from "react-redux";
 import store from "./store/store.ts";
 import {BrowserRouter} from "react-router-dom";
 import AppRoutes from "./router/router.tsx";
+import axios from "axios";
+import {GetLocalUser} from "./utils/utils.ts";
+axios.interceptors.request.use(function (config) {
+    const user = GetLocalUser()
+    config.headers["token"] = user ? user.token : ""
 
+    return config
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

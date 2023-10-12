@@ -26,10 +26,5 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
         }
         return Promise.reject(error);
     });
-    axios.interceptors.request.use(function (config) {
-        const user = GetLocalUser()
-        config.headers["token"] = user ? user.token : ""
 
-        return config
-    })
 }
