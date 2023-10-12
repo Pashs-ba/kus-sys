@@ -13,7 +13,6 @@ export default function ContestPage() {
     const [currentQuestion, setCurrentQuestion] = useState(-1)
     useEffect(() => {
         GetContestWithQuestions(params.contest_id as Number).then((res) => {
-            console.log(res)
             setContest(res)
         })
     }, []);
@@ -41,10 +40,13 @@ export default function ContestPage() {
 
     function getDeltaTime() {
         if (contest.error) {
+            // console.log(new Date(contest.error))
             return new Date(contest.start_time) - new Date(contest.error)
         }
         return 0
-
+    }
+    function Milisec2String(milisec: number) {
+        return `${new Date(milisec).getUTCHours()} часов и ${new Date(milisec).getUTCMinutes()} минут `
     }
 
     useEffect(() => {
@@ -62,7 +64,7 @@ export default function ContestPage() {
                                 <h1>Соревнование еще не началось</h1>
                             </div>
 
-                            <p>Перезагрузите страницу через {getDeltaTime()}</p>
+                            <p>Перезагрузите страницу через {Milisec2String(getDeltaTime())}</p>
                         </div>
                     </>
                 ) : (

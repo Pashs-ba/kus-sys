@@ -251,6 +251,11 @@ export function GetContestWithQuestions(id: number) {
         const raw_competition = await axios.get(`${API_PATH}/get/if/competition/id=${id}`)
         const raw_questions = await axios.get(`${API_PATH}/get/if/competition_question[question_id[id,name]]/competition_id=${id}`)
         const contest = raw_competition.data.competitions[0] as Contest
+        if (raw_questions.data.errors){
+            contest.error = raw_questions.data.errors
+            resolve(contest)
+            return
+        }
         contest.questions = raw_questions.data.competition_questions.map((el) => {
             return el.question as Question
         })
