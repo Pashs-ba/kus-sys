@@ -72,6 +72,7 @@ export type Contest = {
     end_time: string
     problems?: number[]
     questions?: Question[]
+    error?: string;
 }
 
 export type Question = {

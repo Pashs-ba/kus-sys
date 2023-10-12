@@ -13,17 +13,19 @@ export default function ContestPage() {
     const [currentQuestion, setCurrentQuestion] = useState(-1)
     useEffect(() => {
         GetContestWithQuestions(params.contest_id as Number).then((res) => {
+            console.log(res)
             setContest(res)
         })
     }, []);
 
     function GetQuestion(): Question {
-        return contest.questions?.find((el) => el.id == currentQuestion)
+        let index = contest.questions?.findIndex((el) => el.id == currentQuestion)
+        return index == -1 ? {} as Question : contest.questions![index]
     }
 
     function UpdateQuestion(force: boolean = false) {
         if (!currentQuestion || currentQuestion == -1) return
-        if (contest.questions?.find((el) => el.id == currentQuestion).legend && !force) return
+        if (GetQuestion().legend && !force) return
         GetFullQuestion(currentQuestion).then((res) => {
             const index = contest.questions?.findIndex((el) => el.id == currentQuestion)
             setContest({
@@ -37,24 +39,51 @@ export default function ContestPage() {
         })
     }
 
+    function getDeltaTime() {
+        if (contest.error) {
+            return new Date(contest.start_time) - new Date(contest.error)
+        }
+        return 0
+
+    }
+
     useEffect(() => {
         UpdateQuestion()
     }, [currentQuestion]);
 
     return (
         <div className={"row h-100"} style={{maxWidth: "100%"}}>
-            <div className="col-lg-2 col-md-3 border-end h-100 text-center">
-                <ContestQuestionsList
-                    contest={contest}
-                    currentQuestion={currentQuestion}
-                    setCurrentQuestion={setCurrentQuestion}
-                />
-            </div>
-            <div className={"col-lg-10 col-md-9 h-100 overflow-auto"}>
-                <QuestionPage currentQuestion={currentQuestion}
-                              GetQuestion={GetQuestion}
-                              UpdateQuestion={UpdateQuestion}/>
-            </div>
+            {
+                contest.error ? (
+                    <>
+                        <div
+                            className="col-12 h-100 text-center d-flex justify-content-center align-items-center flex-column">
+                            <div>
+                                <h1>Соревнование еще не началось</h1>
+                            </div>
+
+                            <p>Перезагрузите страницу через {getDeltaTime()}</p>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className="col-lg-2 col-md-3 border-end h-100 text-center">
+                            <ContestQuestionsList
+                                contest={contest}
+                                currentQuestion={currentQuestion}
+                                setCurrentQuestion={setCurrentQuestion}
+                            />
+                        </div>
+                        <div className={"col-lg-10 col-md-9 h-100 overflow-auto"}>
+                            <QuestionPage currentQuestion={currentQuestion}
+                                          GetQuestion={GetQuestion}
+                                          UpdateQuestion={UpdateQuestion}/>
+                        </div>
+                    </>
+
+                )
+            }
+
         </div>
     )
 }

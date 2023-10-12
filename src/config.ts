@@ -5,3 +5,4 @@ export const MAX_ELEMENT_IN_TABLE = 20
 export const MAIN_PATH = "https://kussystem.ru"
 
 export const DEBUG = false
+

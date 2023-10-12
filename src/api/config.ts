@@ -16,13 +16,7 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
     axios.interceptors.response.use(function (response) {
         return response;
     }, function (error) {
-        // console.log(error)
-        // if (error.response.status == 401) return Promise.reject(error);
-        // if (error.response.status == 409) error_message(error.response.data)
-        // else {
-        //     error_message(ErrorToText(error.code))
-        // }
-        if (error.response.status == 403){
+        if (error.response.status == 403) {
             localStorage.removeItem("user")
             error_message("Пожалуйста перезайдите на сайт")
             setTimeout(() => {
@@ -34,11 +28,8 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
     });
     axios.interceptors.request.use(function (config) {
         const user = GetLocalUser()
-        if (!DEBUG){
-            config.headers["token"] = user?user.token:""
-        }
+        config.headers["token"] = user ? user.token : ""
 
-        // console.log(config)
         return config
     })
 }
