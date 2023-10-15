@@ -70,7 +70,8 @@ export enum ElementType {
     FILE,
     SMART_SELECT,
     SCHEDULE,
-    COMBOBOX
+    COMBOBOX,
+    TABLE_INPUT
 
 }
 
@@ -133,4 +134,11 @@ export type ServerForm = {
     userName: string,
     techName: string,
     fields: FormElementType[]
+}
+
+export type TableInputType = {
+    headers: string[]
+    values?: any[]
+    onInput?: (el: any) => void
+    vertical?: bool
 }

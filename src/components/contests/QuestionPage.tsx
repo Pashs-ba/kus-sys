@@ -11,62 +11,105 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
     GetQuestion: () => Question,
     UpdateQuestion: (force?: boolean) => void
 }) {
-    // const [elements, setElements] = useState([])
-    // useEffect(() => {
-    //     setTimeout(()=>{
-    //         console.log("been", GetQuestion())
-    //         if (GetQuestion() && GetQuestion().type == "singl") {
-    //             setElements([
-    //                 {
-    //                     label: "Ответ",
-    //                     type: ElementType.INPUT,
-    //                     name: "answer",
-    //                     settings: {}
-    //                 }
-    //             ])
-    //         }
-    //     }, 500)
-    //
-    // }, [currentQuestion]);
     function SetQuestion() {
-        if (GetQuestion() && GetQuestion().type == "singl") {
-            return [
-                {
-                    label: "Ответ",
-                    type: ElementType.INPUT,
-                    name: "answer",
-                    settings: {}
-                }
-            ] as FormElementType[]
-        }
-        if (GetQuestion() && GetQuestion().type == "bool"){
-            return [
-                {
-                    label: "Ответ",
-                    type: ElementType.COMBOBOX,
-                    name: "answer",
-                    settings: {
-                        options:[
-                            {
-                                id: "true",
-                                label: "Да"
-                            },
-                            {
-                                id: "false",
-                                label: "Нет"
-                            }
-                        ]
+        if (!GetQuestion()) return [] as FormElementType[]
+
+        switch (GetQuestion().type) {
+            case "singl":
+                return [
+                    {
+                        label: "Ответ",
+                        type: ElementType.INPUT,
+                        name: "answer",
+                        settings: {}
                     }
-                }
-            ] as FormElementType[]
+                ] as FormElementType[]
+            case "bool":
+                return [
+                    {
+                        label: "Ответ",
+                        type: ElementType.COMBOBOX,
+                        name: "answer",
+                        settings: {
+                            options: [
+                                {
+                                    id: "true",
+                                    label: "Да"
+                                },
+                                {
+                                    id: "false",
+                                    label: "Нет"
+                                }
+                            ]
+                        }
+                    }
+                ] as FormElementType[]
+            case "table":
+                return [
+                    {
+                        label: "Ответ",
+                        type: ElementType.TABLE_INPUT,
+                        name: "answer",
+                        settings: {
+                            headers: [
+                                ...GetQuestion()?.ans_list
+                            ],
+                        }
+                    }
+                ] as FormElementType[]
+            case "vertical_table":
+                return [
+                    {
+                        label: "Ответ",
+                        type: ElementType.TABLE_INPUT,
+                        name: "answer",
+                        settings: {
+                            headers: [
+                                ...GetQuestion()?.ans_list
+                            ],
+                            vertical: true
+                        }
+                    }
+                ] as FormElementType[]
+            default:
+                return [] as FormElementType[]
         }
-        return [] as FormElementType[]
+
     }
+
+    function InstanceProcessing(answer?: string) {
+        switch (GetQuestion().type) {
+            case "table":
+            case "vertical_table":
+                return answer ? answer.split(",") : null
+            default:
+                return answer ? answer : null
+        }
+    }
+
+    function AnswerProcessing(answer: string | string[] | null) {
+        if (!answer) return ""
+        switch (GetQuestion().type) {
+            case "table":
+            case "vertical_table":
+                return (answer as string[]).join(",")
+            default:
+                return answer as string
+        }
+    }
+
     const Bool2Ans = {
         "true": "Да",
         "false": "Нет",
         "tru": "Да",
         "fals": "Нет",
+    }
+
+    const Type2Size = {
+        "singl": "col-4",
+        "multi": "col-4",
+        "table": "col-12",
+        "bool": "col-4",
     }
     return (
         <>
@@ -79,7 +122,10 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                 ) : (
                     <>
                         <Modal title={"Ответ записан"} connected_with={"answer"}>
-                            Ответ "{GetQuestion().type=="bool"?Bool2Ans[GetQuestion().answer]:GetQuestion().answer}" на вопрос "{GetQuestion().name}" записан!
+                            Ответ
+                            "{GetQuestion().type == "bool" ? Bool2Ans[GetQuestion().answer] : AnswerProcessing(InstanceProcessing(GetQuestion().answer))}"
+                            на
+                            вопрос "{GetQuestion().name}" записан!
                         </Modal>
                         <div className={"d-flex flex-column h-100"}>
                             <div className=" p-3 d-flex align-items-center border-bottom">
@@ -96,22 +142,23 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                             <div className={"p-3 flex-grow-1 border-bottom"}
                                  dangerouslySetInnerHTML={{__html: GetQuestion().legend}}></div>
                             <div className={"my-4 row"}>
-                                <div className="col-4">
-                                    <Form elements={SetQuestion()} onSubmit={(el) => {
-                                        SendAnswer(currentQuestion, el.answer).then(() => {
-                                            UpdateQuestion(true)
-                                            if (el.answer) {
-                                                let modal = new BootstrapModal(document.getElementById("answer"), {})
-                                                modal.show()
-                                            }
+                                <div className={Type2Size[GetQuestion().type]}>
+                                    <Form elements={SetQuestion()}
+                                          onSubmit={(el) => {
+                                              SendAnswer(currentQuestion, AnswerProcessing(el.answer)).then(() => {
+                                                  UpdateQuestion(true)
+                                                  if (el.answer) {
+                                                      let modal = new BootstrapModal(document.getElementById("answer"), {})
+                                                      modal.show()
+                                                  }
 
-                                        })
+                                              })
 
-                                    }}
+                                          }}
                                           additionalClassesButton={GetQuestion().answer ? "btn-outline-primary" : undefined}
                                           buttonText={GetQuestion().answer ? "Перезаписать ответ" : "Отправить ответ"}
                                           instance={{
-                                              answer: GetQuestion().answer ? GetQuestion().answer : null
+                                              answer: InstanceProcessing(GetQuestion().answer)
                                           }}/>
                                 </div>
 

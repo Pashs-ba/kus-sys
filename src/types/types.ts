@@ -82,4 +82,5 @@ export type Question = {
     legend?: string
     type?: string
     answer?: string
+    ans_list?: string[]
 }

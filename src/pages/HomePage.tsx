@@ -1,6 +1,7 @@
 import MessageBlock from "../components/messages/MessageBlock.tsx";
 import {GetLocalUser} from "../utils/utils.ts";
 import HomePageLinkCard from "../components/homepage/HomePageLinkCard.tsx";
+import TableInput from "../components/UI/TableInput.tsx";
 
 export default function HomePage() {
     const user = GetLocalUser();
@@ -20,7 +21,7 @@ export default function HomePage() {
                         <>
                             <HomePageLinkCard header={"Список соревнований"} to={"/contest"}/>
                         </>
-                    ): null
+                    ) : null
                 }
             </div>
 

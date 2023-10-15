@@ -11,7 +11,7 @@ import {
     ElementType,
     FormType,
     ScheduleFieldType,
-    SmartSelectType
+    SmartSelectType, TableInputType
 } from "./types.ts";
 import {ReactElement, useEffect, useState} from "react";
 import BaseInput from "./BaseInput.tsx";
@@ -23,6 +23,7 @@ import BaseFile from "./BaseFile.tsx";
 import SmartSelect from "./SmartSelect.tsx";
 import ScheduleInput from "./ScheduleInput.tsx";
 import ComboBox from "./ComboBox.tsx";
+import TableInput from "./TableInput.tsx";
 
 export function Form({
                          elements,
@@ -231,6 +232,19 @@ export function Form({
         )
     }
 
+    function create_table_input(settings: TableInputType, name: string) {
+        return (
+            <TableInput
+                headers={settings.headers}
+                values={instance ? instance[name] : []}
+                vertical={settings.vertical}
+                onInput={(el)=>{
+                    element_value_change(el, name)
+                }}
+            />
+        )
+    }
+
     const form_elements = elements.map((element) => {
         let rendered_element: ReactElement
         switch (element.type) {
@@ -260,6 +274,9 @@ export function Form({
                 break
             case ElementType.COMBOBOX:
                 rendered_element = create_combobox(element.settings as ComboboxFieldType, element.name, element.label)
+                break
+            case ElementType.TABLE_INPUT:
+                rendered_element = create_table_input(element.settings as TableInputType, element.name)
                 break
         }
         switch (element.type) {
@@ -295,7 +312,7 @@ export function Form({
         <form className={`${horizontal ? "d-flex" : ""} ${additionalClasses}`}>
             {form_elements}
             <button
-                className={`btn  ${additionalClassesButton?additionalClassesButton:"btn-primary"} ${horizontal ? "my-2" : ""}`}
+                className={`btn  ${additionalClassesButton ? additionalClassesButton : "btn-primary"} ${horizontal ? "my-2" : ""}`}
                 onClick={(el) => {
                     el.preventDefault()
                     onSubmit(form_values)
