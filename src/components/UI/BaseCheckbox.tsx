@@ -1,5 +1,6 @@
 'use client';
 import {BaseCheckboxType} from "./types.ts";
+import {useState} from "react";
 
 export function BaseCheckbox({
                                  required,
@@ -8,7 +9,18 @@ export function BaseCheckbox({
                                  additionalClasses,
                                  onCheck
                              }: BaseCheckboxType) {
+    const [instance, setInstance] = useState(checked != undefined?checked:false)
+
     return (
-        <input required={required} type="checkbox" checked={checked} disabled={disabled} onChange={onCheck} className={`form-check-input ${additionalClasses}`}/>
+        <input
+            required={required}
+            type="checkbox"
+            checked={instance}
+            disabled={disabled}
+            onChange={(el)=>{
+                setInstance(el.currentTarget.checked)
+                onCheck && onCheck(el)
+            }}
+            className={`form-check-input ${additionalClasses}`}/>
     )
 }

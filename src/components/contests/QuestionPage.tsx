@@ -71,6 +71,15 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                         }
                     }
                 ] as FormElementType[]
+            case "check":
+                return GetQuestion().ans_list.map((el, index) => {
+                    return {
+                        label: `${index + 1}. ${el}`,
+                        type: ElementType.CHECKBOX,
+                        name: String(index),
+                        settings: {}
+                    } as FormElementType
+                })
             default:
                 return [] as FormElementType[]
         }
@@ -81,18 +90,33 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
         switch (GetQuestion().type) {
             case "table":
             case "vertical_table":
-                return answer ? answer.split(",") : null
+                return {
+                    answer: answer ? answer.split(",") : null
+                }
+            case "check":
+                let instance = {}
+                if (answer != null) {
+                    answer.split(",").map((el) => {
+                        instance[el] = true
+                    })
+                }
+                return instance
             default:
-                return answer ? answer : null
+                return {
+                    answer: answer ? answer : null
+                }
         }
     }
 
-    function AnswerProcessing(answer: string | string[] | null) {
+    function AnswerProcessing(answer: string | string[] | null | any) {
         if (!answer) return ""
         switch (GetQuestion().type) {
             case "table":
             case "vertical_table":
                 return (answer as string[]).join(",")
+            case "check":
+
+                return Object.keys(answer).filter(el=>answer[el]).join(",")
             default:
                 return answer as string
         }
@@ -123,7 +147,7 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                     <>
                         <Modal title={"Ответ записан"} connected_with={"answer"}>
                             Ответ
-                            "{GetQuestion().type == "bool" ? Bool2Ans[GetQuestion().answer] : AnswerProcessing(InstanceProcessing(GetQuestion().answer))}"
+                            "{GetQuestion().type == "bool" ? Bool2Ans[GetQuestion().answer] : GetQuestion().answer}"
                             на
                             вопрос "{GetQuestion().name}" записан!
                         </Modal>
@@ -145,7 +169,13 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                                 <div className={Type2Size[GetQuestion().type]}>
                                     <Form elements={SetQuestion()}
                                           onSubmit={(el) => {
-                                              SendAnswer(currentQuestion, AnswerProcessing(el.answer)).then(() => {
+                                              let ans
+                                              if (["table", "vertical_table"].includes(GetQuestion().type)) {
+                                                  ans = AnswerProcessing(el.answer)
+                                              } else {
+                                                  ans = AnswerProcessing(el)
+                                              }
+                                              SendAnswer(currentQuestion, ans).then(() => {
                                                   UpdateQuestion(true)
                                                   if (el.answer) {
                                                       let modal = new BootstrapModal(document.getElementById("answer"), {})
@@ -157,9 +187,8 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                                           }}
                                           additionalClassesButton={GetQuestion().answer ? "btn-outline-primary" : undefined}
                                           buttonText={GetQuestion().answer ? "Перезаписать ответ" : "Отправить ответ"}
-                                          instance={{
-                                              answer: InstanceProcessing(GetQuestion().answer)
-                                          }}/>
+                                          instance={InstanceProcessing(GetQuestion().answer)}
+                                    />
                                 </div>
 
                             </div>

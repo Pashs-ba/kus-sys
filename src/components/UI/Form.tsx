@@ -67,7 +67,8 @@ export function Form({
     }, [elements, instance])
 
     function element_value_change(el: any, name: string) {
-        change_form_values({...form_values, [name]: el})
+        const values = {...form_values, [name]: el}
+        change_form_values(values)
     }
 
     function create_input(settings: BaseInputType, name: string, label: string) {
@@ -94,7 +95,9 @@ export function Form({
                 el.currentTarget.selectedOptions[0].value,
                 name
             )
-        }
+        }        setTimeout(() => {
+            console.log(form_values)
+        }, 500)
     }
 
     function create_select(settings: BaseSelectType, name: string) {
@@ -131,7 +134,7 @@ export function Form({
         return (
             <BaseCheckbox
                 required={settings.required}
-                checked={settings.checked}
+                checked={instance ? instance[name] : undefined}
                 disabled={settings.disabled}
                 additionalClasses={settings.additionalClasses}
                 onCheck={(el) => {
