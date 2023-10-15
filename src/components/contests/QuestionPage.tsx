@@ -80,6 +80,17 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                         settings: {}
                     } as FormElementType
                 })
+            case "radio":
+                return GetQuestion().ans_list.map((el, index) => {
+                    return {
+                        label: `${index + 1}. ${el}`,
+                        type: ElementType.RADIO,
+                        name: String(index),
+                        settings: {
+                            connect_with: `${GetQuestion().id}`
+                        }
+                    } as FormElementType
+                })
             default:
                 return [] as FormElementType[]
         }
@@ -94,6 +105,7 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                     answer: answer ? answer.split(",") : null
                 }
             case "check":
+            case "radio":
                 let instance = {}
                 if (answer != null) {
                     answer.split(",").map((el) => {
@@ -115,10 +127,10 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
             case "vertical_table":
                 return (answer as string[]).join(",")
             case "check":
-
-                return Object.keys(answer).filter(el=>answer[el]).join(",")
+            case "radio":
+                return Object.keys(answer).filter(el => answer[el]).join(",")
             default:
-                return answer as string
+                return answer.answer as string
         }
     }
 
@@ -177,11 +189,10 @@ export default function QuestionPage({currentQuestion, GetQuestion, UpdateQuesti
                                               }
                                               SendAnswer(currentQuestion, ans).then(() => {
                                                   UpdateQuestion(true)
-                                                  if (el.answer) {
+                                                  if (ans) {
                                                       let modal = new BootstrapModal(document.getElementById("answer"), {})
                                                       modal.show()
                                                   }
-
                                               })
 
                                           }}

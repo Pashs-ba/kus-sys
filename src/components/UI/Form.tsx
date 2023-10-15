@@ -71,6 +71,18 @@ export function Form({
         change_form_values(values)
     }
 
+    function checkbox_value_change(name: string) {
+        const radioNames = elements
+            .filter(el => {
+                return el.type === ElementType.RADIO
+            })
+            .map(el => el.name)
+        const values = {...form_values}
+        radioNames.map(el_name => values[el_name] = false)
+        values[name] = true
+        change_form_values(values)
+    }
+
     function create_input(settings: BaseInputType, name: string, label: string) {
         return (
             <BaseInput
@@ -95,9 +107,7 @@ export function Form({
                 el.currentTarget.selectedOptions[0].value,
                 name
             )
-        }        setTimeout(() => {
-            console.log(form_values)
-        }, 500)
+        }
     }
 
     function create_select(settings: BaseSelectType, name: string) {
@@ -118,14 +128,22 @@ export function Form({
     }
 
     function create_radio(settings: BaseRadioType, name: string) {
+        function GetChecked() {
+            if (instance) {
+                return instance[name]
+            }
+            if (form_values[name]) {
+                return form_values[name]
+            }
+        }
         return (
             <BaseRadio connect_with={settings.connect_with}
                        required={settings.required}
                        disabled={settings.disabled}
                        additionalClasses={settings.additionalClasses}
-                       checked={settings.checked}
+                       checked={GetChecked()}
                        onCheck={(el) => {
-                           element_value_change(el.currentTarget.checked, name)
+                           checkbox_value_change(name)
                        }}/>
         )
     }
@@ -241,7 +259,7 @@ export function Form({
                 headers={settings.headers}
                 values={instance ? instance[name] : []}
                 vertical={settings.vertical}
-                onInput={(el)=>{
+                onInput={(el) => {
                     element_value_change(el, name)
                 }}
             />

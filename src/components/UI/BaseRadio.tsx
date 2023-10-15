@@ -1,4 +1,5 @@
 import {BaseRadioType} from "./types.ts";
+import {useState} from "react";
 
 export default function BaseRadio({
                                       checked,
@@ -8,13 +9,17 @@ export default function BaseRadio({
                                       additionalClasses,
                                       onCheck
                                   }: BaseRadioType) {
+    const [instance, setInstance] = useState(checked != undefined?checked:false)
     return (
         <input type={"radio"}
                className={`form-check-input ${additionalClasses}`}
                required={required}
                disabled={disabled}
                name={connect_with}
-               checked={checked}
-               onChange={onCheck}
+               checked={instance}
+               onChange={(el)=>{
+                   setInstance(el.currentTarget.checked)
+                   onCheck && onCheck(el)
+               }}
         />)
 }
