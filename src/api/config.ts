@@ -17,7 +17,6 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
         return response;
     }, function (error) {
         if (error.response.status == 403) {
-            localStorage.removeItem("user")
             error_message("Пожалуйста перезайдите на сайт")
             setTimeout(() => {
                 window.location.href = "/"
