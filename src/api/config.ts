@@ -19,7 +19,7 @@ export function ConfigInterceptors(error_message: (message: string) => void) {
         if (error.response.status == 403) {
             error_message("Пожалуйста перезайдите на сайт")
             setTimeout(() => {
-                window.location.href = "/"
+                // window.location.href = "/"
             }, 2000)
 
         }
